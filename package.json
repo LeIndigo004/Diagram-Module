@@ -2,6 +2,7 @@
   "name": "sort-and-filter-module",
   "version": "1.0.0",
   "description": "The Sort and Filter module made for laboration 2 in the course 1dv610.",
+  "type": "module",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
