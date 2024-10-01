@@ -33,10 +33,12 @@ export class DiagramModule {
     const maxWidth = 1000
     const maxHeight = 800
 
+    // Mainimum value
     if (width < minWidth || height < minHeight) {
       throw new Error(`Width must be at least ${minWidth}px and height at least ${minHeight}px.`)
     }
 
+    // Maximum value
     if (width > maxWidth || height > maxHeight) {
       throw new Error(`Width cannot exceed ${maxWidth}px and height cannot exceed ${maxHeight}px.`)
     }
@@ -50,7 +52,7 @@ export class DiagramModule {
     console.log(`Canvas size set to: ${this.#width}x${this.#height}`)
   }
 
-  setTitle (title) {
+  setTitle (title, size, placement) {
     // If the given string is empty.
     if (title === '') {
       throw new Error('Please, do not use an empty string as a title.')
@@ -58,8 +60,8 @@ export class DiagramModule {
     } else if (title.length > 50) {
       throw new Error('Maximal length of string is 50.')
     } else {
-      this.#ctx.font = '20px Georgia'
-      this.#ctx.fillText(title, this.#width / 2, 20) // try to center text
+      this.#ctx.font = `${size}px Georgia`
+      this.#ctx.fillText(title, this.#width / 2, placement) // try to center text
     }  
   }
 
