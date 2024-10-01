@@ -37,4 +37,17 @@ export class DiagramModule {
     console.log(`Canvas size set to: ${this.#width}x${this.#height}`)
   }
 
+  setTitle (title) {
+    // If the given string is empty.
+    if (title === '') {
+      throw new Error('Please, do not use an empty string as a title.')
+    // If the given string has a length longer than 50.
+    } else if (title.length > 50) {
+      throw new Error('Maximal length of string is 50.')
+    } else {
+      this.#ctx.font = '20px Georgia'
+      this.#ctx.fillText(title, this.#width / 2, 20) // try to center text
+    }  
+  }
+
 }
