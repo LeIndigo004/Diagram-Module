@@ -27,6 +27,19 @@ export class DiagramModule {
    * @param {string} height - The height of the canvas.
    */
   setSize (width, height) {
+    // Validate given pixels
+    const minWidth = 200
+    const minHeight = 150
+    const maxWidth = 1000
+    const maxHeight = 800
+
+    if (width < minWidth || height < minHeight) {
+      throw new Error(`Width must be at least ${minWidth}px and height at least ${minHeight}px.`)
+    }
+
+    if (width > maxWidth || height > maxHeight) {
+      throw new Error(`Width cannot exceed ${maxWidth}px and height cannot exceed ${maxHeight}px.`)
+    }
     const canvas = this.#ctx.canvas
     canvas.width = width
     canvas.height = height
