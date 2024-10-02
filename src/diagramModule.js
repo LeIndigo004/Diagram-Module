@@ -94,16 +94,18 @@ export class DiagramModule {
   }
 
   #drawAxes () {
-    const margin = 60
+    // calculate margin
+    const marginWidth = this.#width * 0.1
+    const marginHeight = this.#height * 0.1
 
     // x axel
     this.#ctx.beginPath()
-    this.#ctx.moveTo(margin, this.#height - margin)
-    this.#ctx.lineTo(this.#width - margin, this.#height - margin)
+    this.#ctx.moveTo(marginWidth, this.#height - marginHeight)
+    this.#ctx.lineTo(this.#width - marginWidth, this.#height - marginHeight)
 
     // y axel
-    this.#ctx.moveTo(margin, this.#height - margin)
-    this.#ctx.lineTo(margin, margin)
+    this.#ctx.moveTo(marginWidth, this.#height - marginHeight)
+    this.#ctx.lineTo(marginWidth, marginHeight)
     this.#ctx.stroke()
   }
 }
