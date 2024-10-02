@@ -66,24 +66,21 @@ export class DiagramModule {
     }  
   }
 
-  createPieChart (data) {
-    let text = ''
+  createPieChart (data, colors) {
     const total = data.reduce((sum, value) => sum + value, 0)
-    
+    let startAngle = 0
     for (let i = 0; i < data.length; i++) {
-      const procent = (data[i] / total * 100).toFixed(1)
+      const sliceAngle = data[i] / total * 2 * Math.PI
+      const endAngle = startAngle + sliceAngle
+      this.#ctx.beginPath()
+      // create slice of pie chart
+      this.#ctx.moveTo(this.#width / 2, this.#height / 2)
+      this.#ctx.arc(this.#width / 2, this.#height / 2, this.#width / 4, startAngle, endAngle)
+      this.#ctx.closePath()
+      this.#ctx.fillStyle = colors[i]
+      this.#ctx.fill()
 
-      text += procent + '% '
+      startAngle = endAngle
     }
-    this.#ctx.beginPath()
-    // size of the circle
-    this.#ctx.arc(this.#width / 2, this.#height / 2, this.#width / 4, 0, 2 * Math.PI)
-    this.#ctx.fillStyle = 'red'
-    this.#ctx.fill()
-    this.#ctx.font = `20px Georgia`
-    this.#ctx.fillStyle = 'black'
-    console.log(text)
-    this.#ctx.fillText(text, this.#width / 2, this.#height / 2)
-
   }
 }
