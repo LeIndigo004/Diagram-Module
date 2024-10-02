@@ -16,7 +16,8 @@ export class DiagramModule {
   constructor (canvasId) {
     const canvas = document.getElementById(canvasId)
     this.#ctx = canvas.getContext('2d')
-    
+
+    // Default
     this.setSize('400', '400')
   }
 
@@ -65,4 +66,21 @@ export class DiagramModule {
     }  
   }
 
+  createPieChart (data) {
+
+    // testning to get the procent from each value
+    const total = data.reduce((sum, value) => sum + value, 0)
+    const procent = data[0] / total * 100
+    // begin drawing a circle for test
+    this.#ctx.beginPath()
+    // size of the circle
+    this.#ctx.arc(this.#width / 2, this.#height / 2, this.#width / 4, 0, 2 * Math.PI)
+    this.#ctx.fillStyle = 'red'
+    this.#ctx.fill()
+    this.#ctx.font = `20px Georgia`
+    this.#ctx.fillStyle = 'black'
+    console.log(data[1])
+    this.#ctx.fillText(procent.toFixed(1), this.#width / 2, this.#height / 2)
+
+  }
 }
