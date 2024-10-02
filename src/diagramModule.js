@@ -32,7 +32,7 @@ export class DiagramModule {
     const minWidth = 200
     const minHeight = 150
     const maxWidth = 1000
-    const maxHeight = 800
+    const maxHeight = 1000
 
     // Mainimum value
     if (width < minWidth || height < minHeight) {
@@ -61,8 +61,9 @@ export class DiagramModule {
     } else if (title.length > 50) {
       throw new Error('Maximal length of string is 50.')
     } else {
-      this.#ctx.font = `${size}px Georgia`
-      this.#ctx.fillText(title, this.#width / 2, placement) // try to center text
+      this.#ctx.textAlign = 'center'
+      this.#ctx.font = `${this.#height * 0.05}px Georgia`
+      this.#ctx.fillText(title, this.#width / 2, this.#height * 0.05) // try to center text
     }  
   }
 
@@ -84,8 +85,9 @@ export class DiagramModule {
     }
   }
 
-  createBarChart (maxValueForY, numOfLabels) {
-    this.#setYLabels(maxValueForY, numOfLabels)
+  createBarChart (xLabel, xLabels, yLabel, maxValueForY, numOfLabels) {
+    this.#setYLabels(yLabel, maxValueForY, numOfLabels)
+    this.#setXLabels(xLabel, xLabels)
     
   }
 
@@ -93,10 +95,40 @@ export class DiagramModule {
     this.#setYLabels(10, 10)
   }
 
-  #setYLabels (maxValueForY, yNumOfLabels) {
+  #setXLabels (xLabelName, xLabels) {
     const marginHeight = this.#height * 0.1
     const marginWidth = this.#width * 0.1
     this.#drawAxes(marginHeight, marginWidth)
+    const fontSize = this.#height * 0.03
+    this.#ctx.font = `${fontSize}px Georgia`; // Set font size
+    this.#ctx.textAlign = 'left'
+    this.#ctx.fillText(xLabelName, (this.#width - marginWidth) * 1.02, this.#height - marginHeight)
+
+    const step = (this.#width - 2 * marginWidth) / xLabels.length
+
+    for (let i = 0; i < xLabels.length; i++) {
+      const labelX = marginWidth + (i + 1)* step
+
+      this.#ctx.beginPath()
+      this.#ctx.moveTo(labelX, this.#height - marginHeight - 5)
+      this.#ctx.lineTo(labelX, this.#height - marginHeight + 5)
+      this.#ctx.stroke()
+
+      this.#ctx.font = `${this.#height * 0.013}px Georgia`; // Set font size
+      this.#ctx.textAlign = 'center'
+      this.#ctx.fillText(xLabels[i], labelX, (this.#height - marginHeight) * 1.05)
+      console.log(xLabels[i])
+    }
+  }
+
+  #setYLabels (yLabel, maxValueForY, yNumOfLabels) {
+    const marginHeight = this.#height * 0.1
+    const marginWidth = this.#width * 0.1
+    this.#drawAxes(marginHeight, marginWidth)
+    this.#ctx.textAlign = 'center'
+
+    this.#ctx.font = `${this.#height * 0.03}px Georgia` // Set font size
+    this.#ctx.fillText(yLabel, marginWidth, marginHeight / 2)
 
     for (let i = 0; i <= yNumOfLabels; i++) {
       // Calculate the value of the label
@@ -109,19 +141,9 @@ export class DiagramModule {
       this.#ctx.lineTo(marginWidth + 5, labelY)
       this.#ctx.stroke()
 
-      let paddingRight
-
-      if (this.#width >= 800 || this.#height >= 600) {
-        this.#ctx.font = '30px Georgia'
-        paddingRight = 50
-      } else if (this.#width >= 600 || this.#height >= 400) {
-        this.#ctx.font = '20px Georgia'
-        paddingRight = 30
-      } else {
-        this.#ctx.font = '10px Georgia'
-        paddingRight = 20
-      }
-      this.#ctx.fillText(labelValue.toFixed(0), marginWidth - paddingRight, labelY)
+      this.#ctx.font = `${this.#height * 0.03}px Georgia`
+      this.#ctx.textAlign = 'center'
+      this.#ctx.fillText(labelValue.toFixed(0), marginWidth * 0.5, labelY)
     }
   }
 
