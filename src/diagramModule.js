@@ -84,19 +84,48 @@ export class DiagramModule {
     }
   }
 
-  createBarChart () {
-    this.#drawAxes()
+  createBarChart (maxValueForY, numOfLabels) {
+    this.#setYLabels(maxValueForY, numOfLabels)
     
   }
 
   createLineChart() {
-    this.#drawAxes()
+    this.#setYLabels(10, 10)
   }
 
-  #drawAxes () {
-    // calculate margin
-    const marginWidth = this.#width * 0.1
+  #setYLabels (maxValueForY, yNumOfLabels) {
     const marginHeight = this.#height * 0.1
+    const marginWidth = this.#width * 0.1
+    this.#drawAxes(marginHeight, marginWidth)
+
+    for (let i = 0; i <= yNumOfLabels; i++) {
+      // Calculate the value of the label
+      const labelValue = maxValueForY - (maxValueForY/yNumOfLabels * i)
+      // Calculate the position
+      const labelY = marginHeight + ((this.#height - 2 * marginHeight) / yNumOfLabels) * i
+
+      this.#ctx.beginPath()
+      this.#ctx.moveTo(marginWidth - 5, labelY)
+      this.#ctx.lineTo(marginWidth + 5, labelY)
+      this.#ctx.stroke()
+
+      let paddingRight
+
+      if (this.#width >= 800 || this.#height >= 600) {
+        this.#ctx.font = '30px Georgia'
+        paddingRight = 50
+      } else if (this.#width >= 600 || this.#height >= 400) {
+        this.#ctx.font = '20px Georgia'
+        paddingRight = 30
+      } else {
+        this.#ctx.font = '10px Georgia'
+        paddingRight = 20
+      }
+      this.#ctx.fillText(labelValue.toFixed(0), marginWidth - paddingRight, labelY)
+    }
+  }
+
+  #drawAxes (marginWidth, marginHeight) {
 
     // x axel
     this.#ctx.beginPath()
