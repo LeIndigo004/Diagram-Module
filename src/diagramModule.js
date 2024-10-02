@@ -83,4 +83,27 @@ export class DiagramModule {
       startAngle = endAngle
     }
   }
+
+  createBarChart () {
+    this.#drawAxes()
+    
+  }
+
+  createLineChart() {
+    this.#drawAxes()
+  }
+
+  #drawAxes () {
+    const margin = 60
+
+    // x axel
+    this.#ctx.beginPath()
+    this.#ctx.moveTo(margin, this.#height - margin)
+    this.#ctx.lineTo(this.#width - margin, this.#height - margin)
+
+    // y axel
+    this.#ctx.moveTo(margin, this.#height - margin)
+    this.#ctx.lineTo(margin, margin)
+    this.#ctx.stroke()
+  }
 }
