@@ -67,11 +67,14 @@ export class DiagramModule {
   }
 
   createPieChart (data) {
-
-    // testning to get the procent from each value
+    let text = ''
     const total = data.reduce((sum, value) => sum + value, 0)
-    const procent = data[0] / total * 100
-    // begin drawing a circle for test
+    
+    for (let i = 0; i < data.length; i++) {
+      const procent = (data[i] / total * 100).toFixed(1)
+
+      text += procent + '% '
+    }
     this.#ctx.beginPath()
     // size of the circle
     this.#ctx.arc(this.#width / 2, this.#height / 2, this.#width / 4, 0, 2 * Math.PI)
@@ -79,8 +82,8 @@ export class DiagramModule {
     this.#ctx.fill()
     this.#ctx.font = `20px Georgia`
     this.#ctx.fillStyle = 'black'
-    console.log(data[1])
-    this.#ctx.fillText(procent.toFixed(1), this.#width / 2, this.#height / 2)
+    console.log(text)
+    this.#ctx.fillText(text, this.#width / 2, this.#height / 2)
 
   }
 }
