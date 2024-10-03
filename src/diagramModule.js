@@ -53,7 +53,13 @@ export class DiagramModule {
     console.log(`Canvas size set to: ${this.#width}x${this.#height}`)
   }
 
-  setTitle (title, size, placement) {
+  /**
+   * A public method represanting the title of the diagram.
+   *
+   * @param {string} title - The title of the diagram.
+   * @param {string} font - The font of the title.
+   */
+  setTitle (title, font) {
     // If the given string is empty.
     if (title === '') {
       throw new Error('Please, do not use an empty string as a title.')
@@ -62,11 +68,17 @@ export class DiagramModule {
       throw new Error('Maximal length of string is 50.')
     } else {
       this.#ctx.textAlign = 'center'
-      this.#ctx.font = `${this.#height * 0.05}px Georgia`
+      this.#ctx.font = `${this.#height * 0.05}px ${font}`
       this.#ctx.fillText(title, this.#width / 2, this.#height * 0.05) // try to center text
     }  
   }
 
+  /**
+   * Creates a pie chart which takes data and colors as parameters.
+   *
+   * @param {Object[]} data - The given data.
+   * @param {string[]} colors - The given colors
+   */
   createPieChart (data, colors) {
     const total = data.reduce((sum, value) => sum + value, 0)
     let startAngle = 0
@@ -85,10 +97,39 @@ export class DiagramModule {
     }
   }
 
-  createBarChart (xLabel, xLabels, yLabel, maxValueForY, numOfLabels) {
-    this.#setYLabels(yLabel, maxValueForY, numOfLabels)
-    this.#setXLabels(xLabel, xLabels)
+  /**
+   * 
+   * @param {*} data 
+   * @param {*} colors 
+   * @param {*} xLabel 
+   * @param {*} xLabels 
+   * @param {*} yLabel 
+   * @param {*} maxValueForY 
+   * @param {*} numOfLabels 
+   */
+  createBarChart (data, yLabel, maxValueForY, numOfLabels) {
+    const label = data.map(item => item.label)
+    const value = data.map(item => item.value)
+    const color = data.map(item => item.color)
     
+    this.#setYLabels(yLabel, maxValueForY, numOfLabels)
+    this.#setXLabels('Months', label)
+
+    const marginHeight = this.#height * 0.2
+    const marginWidth = this.#width * 0.2
+
+    for (let i = 0; i < data.length; i++) {
+
+      const barWidth = (this.#width - marginWidth * 2) / label.length
+      const barHeight = (value[i] / maxValueForY) * (this.#height - 2 * marginHeight)
+
+      this.#ctx.fillStyle = color[i]
+      const barX  = marginWidth + i * barWidth
+      this.#ctx.beginPath()
+      this.#ctx.fillRect(barX, this.#height - marginHeight, barWidth, -barHeight)
+      this.#ctx.stroke()
+
+    }
   }
 
   createLineChart() {
@@ -96,8 +137,8 @@ export class DiagramModule {
   }
 
   #setXLabels (xLabelName, xLabels) {
-    const marginHeight = this.#height * 0.1
-    const marginWidth = this.#width * 0.1
+    const marginHeight = this.#height * 0.2
+    const marginWidth = this.#width * 0.2
     this.#drawAxes(marginHeight, marginWidth)
     const fontSize = this.#height * 0.03
     this.#ctx.font = `${fontSize}px Georgia`; // Set font size
@@ -122,8 +163,8 @@ export class DiagramModule {
   }
 
   #setYLabels (yLabel, maxValueForY, yNumOfLabels) {
-    const marginHeight = this.#height * 0.1
-    const marginWidth = this.#width * 0.1
+    const marginHeight = this.#height * 0.2
+    const marginWidth = this.#width * 0.2
     this.#drawAxes(marginHeight, marginWidth)
     this.#ctx.textAlign = 'center'
 
