@@ -116,19 +116,28 @@ export class DiagramModule {
     // Define margins for bar chart
     this.#marginHeight = this.#height * 0.2
     this.#marginWidth = this.#width * 0.2
+
+    // Get the axes and its labels
     this.#drawAxes(this.#marginHeight, this.#marginWidth)
     this.#setYLabels(this.#marginHeight, this.#marginWidth, yTitle, maxValueForY, numOfYLabels)
     this.#setXLabels(this.#marginHeight, this.#marginWidth, xTitle, label, false)
 
+    const totalBarWidth = this.#width - this.#marginWidth * 2
+    const barWidth = totalBarWidth / label.length * 0.5 // Adjust the bar width (70% of space for each bar)
+
     for (let i = 0; i < data.length; i++) {
+       // Calculate the central position of each label on x
+       const labelX = this.#marginWidth + (i + 0.5) * (totalBarWidth / label.length)
+      
+      // Get the bar height
+      const barHeight = ((value[i])/ maxValueForY) * (this.#height - 2 * this.#marginHeight)
 
-      const barWidth = (this.#width - this.#marginWidth * 2) / label.length
-      const barHeight = (value[i] / maxValueForY) * (this.#height - 2 * this.#marginHeight)
-
-      this.#ctx.fillStyle = color[i]
-      const barX  = this.#marginWidth + i * barWidth
+      // Get the bar on the right position through dividing the width of the
+      // bar by 2 and substract it with the central position of each label
+      const barPosition = labelX - barWidth / 2
       this.#ctx.beginPath()
-      this.#ctx.fillRect(barX, this.#height - this.#marginHeight, barWidth, -barHeight)
+      this.#ctx.fillStyle = color[i]
+      this.#ctx.fillRect(barPosition, this.#height - this.#marginHeight, barWidth, -barHeight)
       this.#ctx.stroke()
 
     }
@@ -145,52 +154,57 @@ export class DiagramModule {
      this.#ctx.textAlign = 'left'
      this.#ctx.fillText(xLabelName, (this.#width - marginWidth) * 1.02, this.#height - marginHeight)
  
+     // Check if the type of chart and add or remove the first and last short line
      let xLineUp
      if (isLineChart) {
       xLineUp = (this.#width - 2 * marginWidth) / (xLabels.length - 1)
      } else {
-      xLineUp = (this.#width - 2 * marginWidth) / (xLabels.length + 1)
+      xLineUp = (this.#width - 2 * marginWidth) / (xLabels.length)
      }
  
      for (let i = 0; i < xLabels.length; i++) {
        const labelX = isLineChart
        ? marginWidth + i * xLineUp
-       : marginWidth + (i + 1)* xLineUp 
+       : marginWidth + (i + 0.5)* xLineUp 
  
+       // Create short lines on the x axel to specify the labels
        this.#ctx.beginPath()
        this.#ctx.moveTo(labelX, this.#height - marginHeight - 5)
        this.#ctx.lineTo(labelX, this.#height - marginHeight + 5)
        this.#ctx.stroke()
  
+      // Create a title for the labels
        this.#ctx.font = `${this.#height * 0.02}px Georgia`; // Set font size
        this.#ctx.textAlign = 'center'
        this.#ctx.fillText(xLabels[i], labelX, (this.#height - marginHeight) * 1.05)
-       console.log(xLabels[i])
      }
    }
  
    #setYLabels (marginHeight, marginWidth, yLabel, maxValueForY, yNumOfLabels) {
- 
-    // this.#drawAxes(marginHeight, marginWidth)
+    // Center the labels
      this.#ctx.textAlign = 'center'
  
+     // Style the text
      this.#ctx.font = `${this.#height * 0.03}px Georgia` // Set font size
-     this.#ctx.fillText(yLabel, marginWidth, marginHeight / 2)
+     this.#ctx.fillText(yLabel, marginWidth, marginHeight / 1.5)
  
+     // Loop through each given label
      for (let i = 0; i <= yNumOfLabels; i++) {
        // Calculate the value of the label
        const labelValue = maxValueForY - (maxValueForY/yNumOfLabels * i)
        // Calculate the position
        const labelY = marginHeight + ((this.#height - 2 * marginHeight) / yNumOfLabels) * i
  
+       // Create short lines on the y axel to specify the labels
        this.#ctx.beginPath()
        this.#ctx.moveTo(marginWidth - 5, labelY)
        this.#ctx.lineTo(marginWidth + 5, labelY)
        this.#ctx.stroke()
  
+       // Create a title for the labels
        this.#ctx.font = `${this.#height * 0.03}px Georgia`
        this.#ctx.textAlign = 'center'
-       this.#ctx.fillText(labelValue.toFixed(0), marginWidth * 0.5, labelY)
+       this.#ctx.fillText(labelValue.toFixed(0), marginWidth * 0.7, labelY)
      }
    }
  
