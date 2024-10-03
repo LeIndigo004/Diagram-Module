@@ -5,6 +5,7 @@
  * @version 1.0.0
  */
 
+
 /**
  * Creates the main class for this diagram module.
  */
@@ -12,11 +13,12 @@ export class DiagramModule {
   #ctx
   #width
   #height
+  #marginHeight
+  #marginWidth
 
   constructor (canvasId) {
     const canvas = document.getElementById(canvasId)
     this.#ctx = canvas.getContext('2d')
-
     // Default
     this.setSize('400', '400')
   }
@@ -69,7 +71,7 @@ export class DiagramModule {
     } else {
       this.#ctx.textAlign = 'center'
       this.#ctx.font = `${this.#height * 0.05}px ${font}`
-      this.#ctx.fillText(title, this.#width / 2, this.#height * 0.05) // try to center text
+      this.#ctx.fillText(title, this.#width / 2, this.#height * 0.06) // try to center text
     }  
   }
 
@@ -97,36 +99,36 @@ export class DiagramModule {
     }
   }
 
-  /**
-   * 
-   * @param {*} data 
-   * @param {*} colors 
-   * @param {*} xLabel 
-   * @param {*} xLabels 
-   * @param {*} yLabel 
-   * @param {*} maxValueForY 
-   * @param {*} numOfLabels 
-   */
-  createBarChart (data, yLabel, maxValueForY, numOfLabels) {
+/**
+ * Creates a bar chart with customizable labels for y and x axels, and colors.
+ *
+ * @param {Object[]} data - The given data to track in the diagram
+ * @param {String} xTitle - The title of the x axel
+ * @param {String} yTitle - The title of the y axel
+ * @param {Number} maxValueForY - The highest value on the y axel
+ * @param {Number} numOfYLabels - The amount of written out labels you want on the y axel
+ */
+  createBarChart (data, yTitle, xTitle, maxValueForY, numOfYLabels) {
     const label = data.map(item => item.label)
     const value = data.map(item => item.value)
     const color = data.map(item => item.color)
-    
-    this.#setYLabels(yLabel, maxValueForY, numOfLabels)
-    this.#setXLabels('Months', label)
 
-    const marginHeight = this.#height * 0.2
-    const marginWidth = this.#width * 0.2
+    // Define margins for bar chart
+    this.#marginHeight = this.#height * 0.2
+    this.#marginWidth = this.#width * 0.2
+    this.#drawAxes(this.#marginHeight, this.#marginWidth)
+    this.#setYLabels(this.#marginHeight, this.#marginWidth, yTitle, maxValueForY, numOfYLabels)
+    this.#setXLabels(this.#marginHeight, this.#marginWidth, xTitle, label, false)
 
     for (let i = 0; i < data.length; i++) {
 
-      const barWidth = (this.#width - marginWidth * 2) / label.length
-      const barHeight = (value[i] / maxValueForY) * (this.#height - 2 * marginHeight)
+      const barWidth = (this.#width - this.#marginWidth * 2) / label.length
+      const barHeight = (value[i] / maxValueForY) * (this.#height - 2 * this.#marginHeight)
 
       this.#ctx.fillStyle = color[i]
-      const barX  = marginWidth + i * barWidth
+      const barX  = this.#marginWidth + i * barWidth
       this.#ctx.beginPath()
-      this.#ctx.fillRect(barX, this.#height - marginHeight, barWidth, -barHeight)
+      this.#ctx.fillRect(barX, this.#height - this.#marginHeight, barWidth, -barHeight)
       this.#ctx.stroke()
 
     }
@@ -136,68 +138,73 @@ export class DiagramModule {
     this.#setYLabels(10, 10)
   }
 
-  #setXLabels (xLabelName, xLabels) {
-    const marginHeight = this.#height * 0.2
-    const marginWidth = this.#width * 0.2
-    this.#drawAxes(marginHeight, marginWidth)
-    const fontSize = this.#height * 0.03
-    this.#ctx.font = `${fontSize}px Georgia`; // Set font size
-    this.#ctx.textAlign = 'left'
-    this.#ctx.fillText(xLabelName, (this.#width - marginWidth) * 1.02, this.#height - marginHeight)
+  #setXLabels (marginHeight, marginWidth, xLabelName, xLabels, isLineChart) {
+    // this.#drawAxes(marginHeight, marginWidth)
+     const fontSize = this.#height * 0.03
+     this.#ctx.font = `${fontSize}px Georgia`; // Set font size
+     this.#ctx.textAlign = 'left'
+     this.#ctx.fillText(xLabelName, (this.#width - marginWidth) * 1.02, this.#height - marginHeight)
+ 
+     let xLineUp
+     if (isLineChart) {
+      xLineUp = (this.#width - 2 * marginWidth) / (xLabels.length - 1)
+     } else {
+      xLineUp = (this.#width - 2 * marginWidth) / (xLabels.length + 1)
+     }
+ 
+     for (let i = 0; i < xLabels.length; i++) {
+       const labelX = isLineChart
+       ? marginWidth + i * xLineUp
+       : marginWidth + (i + 1)* xLineUp 
+ 
+       this.#ctx.beginPath()
+       this.#ctx.moveTo(labelX, this.#height - marginHeight - 5)
+       this.#ctx.lineTo(labelX, this.#height - marginHeight + 5)
+       this.#ctx.stroke()
+ 
+       this.#ctx.font = `${this.#height * 0.02}px Georgia`; // Set font size
+       this.#ctx.textAlign = 'center'
+       this.#ctx.fillText(xLabels[i], labelX, (this.#height - marginHeight) * 1.05)
+       console.log(xLabels[i])
+     }
+   }
+ 
+   #setYLabels (marginHeight, marginWidth, yLabel, maxValueForY, yNumOfLabels) {
+ 
+    // this.#drawAxes(marginHeight, marginWidth)
+     this.#ctx.textAlign = 'center'
+ 
+     this.#ctx.font = `${this.#height * 0.03}px Georgia` // Set font size
+     this.#ctx.fillText(yLabel, marginWidth, marginHeight / 2)
+ 
+     for (let i = 0; i <= yNumOfLabels; i++) {
+       // Calculate the value of the label
+       const labelValue = maxValueForY - (maxValueForY/yNumOfLabels * i)
+       // Calculate the position
+       const labelY = marginHeight + ((this.#height - 2 * marginHeight) / yNumOfLabels) * i
+ 
+       this.#ctx.beginPath()
+       this.#ctx.moveTo(marginWidth - 5, labelY)
+       this.#ctx.lineTo(marginWidth + 5, labelY)
+       this.#ctx.stroke()
+ 
+       this.#ctx.font = `${this.#height * 0.03}px Georgia`
+       this.#ctx.textAlign = 'center'
+       this.#ctx.fillText(labelValue.toFixed(0), marginWidth * 0.5, labelY)
+     }
+   }
+ 
+   #drawAxes (marginHeight, marginWidth) {
+ 
+     // x axel
+     this.#ctx.beginPath()
+     this.#ctx.moveTo(marginWidth, this.#height - marginHeight)
+     this.#ctx.lineTo(this.#width - marginWidth, this.#height - marginHeight)
+ 
+     // y axel
+     this.#ctx.moveTo(marginWidth, this.#height - marginHeight)
+     this.#ctx.lineTo(marginWidth, marginHeight)
+     this.#ctx.stroke()
+   }
 
-    const step = (this.#width - 2 * marginWidth) / xLabels.length
-
-    for (let i = 0; i < xLabels.length; i++) {
-      const labelX = marginWidth + (i + 1)* step
-
-      this.#ctx.beginPath()
-      this.#ctx.moveTo(labelX, this.#height - marginHeight - 5)
-      this.#ctx.lineTo(labelX, this.#height - marginHeight + 5)
-      this.#ctx.stroke()
-
-      this.#ctx.font = `${this.#height * 0.013}px Georgia`; // Set font size
-      this.#ctx.textAlign = 'center'
-      this.#ctx.fillText(xLabels[i], labelX, (this.#height - marginHeight) * 1.05)
-      console.log(xLabels[i])
-    }
-  }
-
-  #setYLabels (yLabel, maxValueForY, yNumOfLabels) {
-    const marginHeight = this.#height * 0.2
-    const marginWidth = this.#width * 0.2
-    this.#drawAxes(marginHeight, marginWidth)
-    this.#ctx.textAlign = 'center'
-
-    this.#ctx.font = `${this.#height * 0.03}px Georgia` // Set font size
-    this.#ctx.fillText(yLabel, marginWidth, marginHeight / 2)
-
-    for (let i = 0; i <= yNumOfLabels; i++) {
-      // Calculate the value of the label
-      const labelValue = maxValueForY - (maxValueForY/yNumOfLabels * i)
-      // Calculate the position
-      const labelY = marginHeight + ((this.#height - 2 * marginHeight) / yNumOfLabels) * i
-
-      this.#ctx.beginPath()
-      this.#ctx.moveTo(marginWidth - 5, labelY)
-      this.#ctx.lineTo(marginWidth + 5, labelY)
-      this.#ctx.stroke()
-
-      this.#ctx.font = `${this.#height * 0.03}px Georgia`
-      this.#ctx.textAlign = 'center'
-      this.#ctx.fillText(labelValue.toFixed(0), marginWidth * 0.5, labelY)
-    }
-  }
-
-  #drawAxes (marginWidth, marginHeight) {
-
-    // x axel
-    this.#ctx.beginPath()
-    this.#ctx.moveTo(marginWidth, this.#height - marginHeight)
-    this.#ctx.lineTo(this.#width - marginWidth, this.#height - marginHeight)
-
-    // y axel
-    this.#ctx.moveTo(marginWidth, this.#height - marginHeight)
-    this.#ctx.lineTo(marginWidth, marginHeight)
-    this.#ctx.stroke()
-  }
 }

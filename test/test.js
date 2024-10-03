@@ -3,7 +3,7 @@ import { DiagramModule } from "../src/diagramModule.js"
 const newDiagram = new DiagramModule('diagram-id')
 
 // Set the size of the diagram
-newDiagram.setSize('1000', '1000')
+newDiagram.setSize(1000, 1000)
 
 newDiagram.setTitle('Diagram', 'Arial')
 const data = [
@@ -13,4 +13,4 @@ const data = [
   {label: 'pear', value: 60, color: 'green'}
 ]
 
-newDiagram.createBarChart(data,'Tempature (C)','60', 12)
+newDiagram.createBarChart(data,'Students', 'fruits', '60', 12)
