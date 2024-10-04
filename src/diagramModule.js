@@ -84,9 +84,12 @@ export class DiagramModule {
    * @param {Object[]} data - The given data.
    * @param {string[]} colors - The given colors
    */
-  createPieChart (data, colors) {
+  createPieChart (data) {
+    const label = data.map(item => item.label)
+    const value = data.map(item => item.value)
+    const color = data.map(item => item.color)
     // Get the percent of each value
-    const total = data.reduce((sum, value) => sum + value, 0)
+    const total = value.reduce((sum, value) => sum + value, 0)
     let startAngle = 0
 
     const centralX = this.#width / 2
@@ -94,14 +97,14 @@ export class DiagramModule {
     const radius = this.#width / 4
 
     for (let i = 0; i < data.length; i++) {
-      const sliceAngle = data[i] / total * 2 * Math.PI
+      const sliceAngle = value[i] / total * 2 * Math.PI
       const endAngle = startAngle + sliceAngle
       this.#ctx.beginPath()
       // create slice of pie chart
       this.#ctx.moveTo(centralX, centralY)
       this.#ctx.arc(centralX, centralY, radius, startAngle, endAngle)
       this.#ctx.closePath()
-      this.#ctx.fillStyle = colors[i]
+      this.#ctx.fillStyle = color[i]
       this.#ctx.fill()
 
       startAngle = endAngle
