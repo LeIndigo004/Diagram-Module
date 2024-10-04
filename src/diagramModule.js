@@ -31,10 +31,10 @@ export class DiagramModule {
    */
   setSize (width, height) {
     // Validate given pixels
-    const minWidth = 200
-    const minHeight = 150
-    const maxWidth = 1000
-    const maxHeight = 1000
+    const minWidth = 400
+    const minHeight = 200
+    const maxWidth = 1200
+    const maxHeight = 1200
 
     // Mainimum value
     if (width < minWidth || height < minHeight) {
@@ -82,15 +82,21 @@ export class DiagramModule {
    * @param {string[]} colors - The given colors
    */
   createPieChart (data, colors) {
+    // Get the percent of each value
     const total = data.reduce((sum, value) => sum + value, 0)
     let startAngle = 0
+
+    const centralX = this.#width / 2
+    const centralY = this.#height / 2
+    const radius = this.#width / 4
+
     for (let i = 0; i < data.length; i++) {
       const sliceAngle = data[i] / total * 2 * Math.PI
       const endAngle = startAngle + sliceAngle
       this.#ctx.beginPath()
       // create slice of pie chart
-      this.#ctx.moveTo(this.#width / 2, this.#height / 2)
-      this.#ctx.arc(this.#width / 2, this.#height / 2, this.#width / 4, startAngle, endAngle)
+      this.#ctx.moveTo(centralX, centralY)
+      this.#ctx.arc(centralX, centralY, radius, startAngle, endAngle)
       this.#ctx.closePath()
       this.#ctx.fillStyle = colors[i]
       this.#ctx.fill()
@@ -122,29 +128,89 @@ export class DiagramModule {
     this.#setYLabels(this.#marginHeight, this.#marginWidth, yTitle, maxValueForY, numOfYLabels)
     this.#setXLabels(this.#marginHeight, this.#marginWidth, xTitle, label, false)
 
-    const totalBarWidth = this.#width - this.#marginWidth * 2
-    const barWidth = totalBarWidth / label.length * 0.5 // Adjust the bar width (70% of space for each bar)
+    const availableWidth = this.#width - this.#marginWidth * 2
+    const barWidth = availableWidth / label.length * 0.5 // Adjust the bar width 
 
     for (let i = 0; i < data.length; i++) {
+      // Validate input
+      if (maxValueForY < value[i]) {
+        throw new Error('The max value for Y cannot be smaller than the given values')
+      }
        // Calculate the central position of each label on x
-       const labelX = this.#marginWidth + (i + 0.5) * (totalBarWidth / label.length)
+       const labelX = this.#marginWidth + (i + 0.5) * (availableWidth / label.length)
       
-      // Get the bar height
-      const barHeight = ((value[i])/ maxValueForY) * (this.#height - 2 * this.#marginHeight)
-
-      // Get the bar on the right position through dividing the width of the
-      // bar by 2 and substract it with the central position of each label
-      const barPosition = labelX - barWidth / 2
-      this.#ctx.beginPath()
-      this.#ctx.fillStyle = color[i]
-      this.#ctx.fillRect(barPosition, this.#height - this.#marginHeight, barWidth, -barHeight)
-      this.#ctx.stroke()
-
+       // Get the bar height
+       const barHeight = ((value[i])/ maxValueForY) * (this.#height - 2 * this.#marginHeight)
+ 
+       // Get the bar on the right position through dividing the width of the
+       // bar by 2 and substract it with the central position of each label
+       const barPosition = labelX - barWidth / 2
+       this.#ctx.beginPath()
+       this.#ctx.fillStyle = color[i]
+       this.#ctx.fillRect(barPosition, this.#height - this.#marginHeight, barWidth, -barHeight)
+       this.#ctx.stroke()
     }
   }
 
-  createLineChart() {
-    this.#setYLabels(10, 10)
+/**
+ * Creates a line chart with customizable labels for y and x axels.
+ *
+ * @param {Object[]} data - The given data to track in the diagram
+ * @param {String} xTitle - The title of the x axel
+ * @param {String} yTitle - The title of the y axel
+ * @param {Number} maxValueForY - The highest value on the y axel
+ * @param {Number} numOfYLabels - The amount of written out labels you want on the y axel
+ */
+  createLineChart(data, yTitle, xTitle, maxValueForY, numOfYLabels) {
+    const label = data.map(item => item.label)
+    const value = data.map(item => item.value)
+
+    this.#drawLabels(yTitle, xTitle, label, maxValueForY, numOfYLabels, true)
+    const startPosition = this.#height - this.#marginHeight
+    const availableWidth = this.#width - 2 * this.#marginWidth
+    const availableHeight = this.#height - 2 * this.#marginHeight
+
+    for (let i = 0; i < data.length; i++) {
+      
+      const xAxel = this.#marginWidth + (i * (availableWidth / (label.length - 1)))
+      const yAxel =  startPosition - ((value[i] / maxValueForY) * availableHeight)
+  
+      // Draw points as circles
+      this.#ctx.beginPath()
+      this.#ctx.arc(xAxel, yAxel, 2, 0, 2 * Math.PI)
+      this.#ctx.fillStyle = 'black'
+      this.#ctx.fill()
+    }
+
+    for (let i = 0; i < data.length; i++) {
+      // Validate input
+      if (maxValueForY < value[i]) { 
+        throw new Error('The max value for Y cannot be smaller than the given values')
+      }
+
+      const xAxel = this.#marginWidth + (i * (availableWidth / (label.length - 1)))
+      const yAxel =  startPosition - ((value[i] / maxValueForY) * availableHeight)
+ 
+        if (i === 0) {
+          // Move to the first position
+          this.#ctx.moveTo(xAxel, yAxel);
+        } else {
+          // Draw a line to the next position
+          this.#ctx.lineTo(xAxel, yAxel);
+        }
+    }
+    // Make line after loop is done to avoid duplication
+    this.#ctx.stroke()
+  }
+
+  #drawLabels(yTitle, xTitle, label, maxValueForY, numOfYLabels, isLineChart) {
+    this.#marginHeight = this.#height * 0.2
+    this.#marginWidth = this.#width * 0.2
+
+    // Get the axes and its labels
+    this.#drawAxes(this.#marginHeight, this.#marginWidth)
+    this.#setYLabels(this.#marginHeight, this.#marginWidth, yTitle, maxValueForY, numOfYLabels)
+    this.#setXLabels(this.#marginHeight, this.#marginWidth, xTitle, label, isLineChart)
   }
 
   #setXLabels (marginHeight, marginWidth, xLabelName, xLabels, isLineChart) {
@@ -154,18 +220,15 @@ export class DiagramModule {
      this.#ctx.textAlign = 'left'
      this.#ctx.fillText(xLabelName, (this.#width - marginWidth) * 1.02, this.#height - marginHeight)
  
-     // Check if the type of chart and add or remove the first and last short line
-     let xLineUp
-     if (isLineChart) {
-      xLineUp = (this.#width - 2 * marginWidth) / (xLabels.length - 1)
-     } else {
-      xLineUp = (this.#width - 2 * marginWidth) / (xLabels.length)
-     }
- 
      for (let i = 0; i < xLabels.length; i++) {
-       const labelX = isLineChart
-       ? marginWidth + i * xLineUp
-       : marginWidth + (i + 0.5)* xLineUp 
+       let labelX
+       
+        // Check if the type of chart and add or remove the first and last short line
+       if (isLineChart) {
+        labelX = marginWidth + i * (this.#width - 2 * marginWidth) / (xLabels.length - 1)
+       } else {
+        labelX = marginWidth + (i + 0.5) * (this.#width - 2 * marginWidth) / (xLabels.length)
+       } 
  
        // Create short lines on the x axel to specify the labels
        this.#ctx.beginPath()
