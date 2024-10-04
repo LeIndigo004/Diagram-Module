@@ -5,6 +5,7 @@
  * @version 1.0.0
  */
 
+import { Axes } from "./axes.js"
 
 /**
  * Creates the main class for this diagram module.
@@ -15,6 +16,7 @@ export class DiagramModule {
   #height
   #marginHeight
   #marginWidth
+  #axes
 
   constructor (canvasId) {
     const canvas = document.getElementById(canvasId)
@@ -52,7 +54,8 @@ export class DiagramModule {
     // Set the values to the private fields
     this.#width = width
     this.#height = height
-    console.log(`Canvas size set to: ${this.#width}x${this.#height}`)
+    
+    this.#axes = new Axes(this.#ctx, width, height)
   }
 
   /**
@@ -124,10 +127,7 @@ export class DiagramModule {
     this.#marginWidth = this.#width * 0.2
 
     // Get the axes and its labels
-    this.#drawAxes(this.#marginHeight, this.#marginWidth)
-    this.#setYLabels(this.#marginHeight, this.#marginWidth, yTitle, maxValueForY, numOfYLabels)
-    this.#setXLabels(this.#marginHeight, this.#marginWidth, xTitle, label, false)
-
+    this.#drawLabels(yTitle, xTitle, label, maxValueForY, numOfYLabels, false)
     const availableWidth = this.#width - this.#marginWidth * 2
     const barWidth = availableWidth / label.length * 0.5 // Adjust the bar width 
 
@@ -208,80 +208,8 @@ export class DiagramModule {
     this.#marginWidth = this.#width * 0.2
 
     // Get the axes and its labels
-    this.#drawAxes(this.#marginHeight, this.#marginWidth)
-    this.#setYLabels(this.#marginHeight, this.#marginWidth, yTitle, maxValueForY, numOfYLabels)
-    this.#setXLabels(this.#marginHeight, this.#marginWidth, xTitle, label, isLineChart)
+    this.#axes.drawAxes(this.#marginHeight, this.#marginWidth)
+    this.#axes.setYLabels(this.#marginHeight, this.#marginWidth, yTitle, maxValueForY, numOfYLabels)
+    this.#axes.setXLabels(this.#marginHeight, this.#marginWidth, xTitle, label, isLineChart)
   }
-
-  #setXLabels (marginHeight, marginWidth, xLabelName, xLabels, isLineChart) {
-    // this.#drawAxes(marginHeight, marginWidth)
-     const fontSize = this.#height * 0.03
-     this.#ctx.font = `${fontSize}px Georgia`; // Set font size
-     this.#ctx.textAlign = 'left'
-     this.#ctx.fillText(xLabelName, (this.#width - marginWidth) * 1.02, this.#height - marginHeight)
- 
-     for (let i = 0; i < xLabels.length; i++) {
-       let labelX
-       
-        // Check if the type of chart and add or remove the first and last short line
-       if (isLineChart) {
-        labelX = marginWidth + i * (this.#width - 2 * marginWidth) / (xLabels.length - 1)
-       } else {
-        labelX = marginWidth + (i + 0.5) * (this.#width - 2 * marginWidth) / (xLabels.length)
-       } 
- 
-       // Create short lines on the x axel to specify the labels
-       this.#ctx.beginPath()
-       this.#ctx.moveTo(labelX, this.#height - marginHeight - 5)
-       this.#ctx.lineTo(labelX, this.#height - marginHeight + 5)
-       this.#ctx.stroke()
- 
-      // Create a title for the labels
-       this.#ctx.font = `${this.#height * 0.02}px Georgia`; // Set font size
-       this.#ctx.textAlign = 'center'
-       this.#ctx.fillText(xLabels[i], labelX, (this.#height - marginHeight) * 1.05)
-     }
-   }
- 
-   #setYLabels (marginHeight, marginWidth, yLabel, maxValueForY, yNumOfLabels) {
-    // Center the labels
-     this.#ctx.textAlign = 'center'
- 
-     // Style the text
-     this.#ctx.font = `${this.#height * 0.03}px Georgia` // Set font size
-     this.#ctx.fillText(yLabel, marginWidth, marginHeight / 1.5)
- 
-     // Loop through each given label
-     for (let i = 0; i <= yNumOfLabels; i++) {
-       // Calculate the value of the label
-       const labelValue = maxValueForY - (maxValueForY/yNumOfLabels * i)
-       // Calculate the position
-       const labelY = marginHeight + ((this.#height - 2 * marginHeight) / yNumOfLabels) * i
- 
-       // Create short lines on the y axel to specify the labels
-       this.#ctx.beginPath()
-       this.#ctx.moveTo(marginWidth - 5, labelY)
-       this.#ctx.lineTo(marginWidth + 5, labelY)
-       this.#ctx.stroke()
- 
-       // Create a title for the labels
-       this.#ctx.font = `${this.#height * 0.03}px Georgia`
-       this.#ctx.textAlign = 'center'
-       this.#ctx.fillText(labelValue.toFixed(0), marginWidth * 0.7, labelY)
-     }
-   }
- 
-   #drawAxes (marginHeight, marginWidth) {
- 
-     // x axel
-     this.#ctx.beginPath()
-     this.#ctx.moveTo(marginWidth, this.#height - marginHeight)
-     this.#ctx.lineTo(this.#width - marginWidth, this.#height - marginHeight)
- 
-     // y axel
-     this.#ctx.moveTo(marginWidth, this.#height - marginHeight)
-     this.#ctx.lineTo(marginWidth, marginHeight)
-     this.#ctx.stroke()
-   }
-
 }
