@@ -99,16 +99,32 @@ export class DiagramModule {
     for (let i = 0; i < data.length; i++) {
       const sliceAngle = value[i] / total * 2 * Math.PI
       const endAngle = startAngle + sliceAngle
+      const textPosition = this.#height * 0.15 + (i * (this.#height * 0.07))
       this.#ctx.beginPath()
       // create slice of pie chart
       this.#ctx.moveTo(centralX, centralY)
       this.#ctx.arc(centralX, centralY, radius, startAngle, endAngle)
       this.#ctx.closePath()
+
+      // The labels
+      this.#ctx.font = `bold ${this.#height * 0.025}px Cambia`
+      this.#ctx.textAlign = 'left'
+      this.#ctx.fillStyle = 'black'
+      this.#ctx.fillText(`${label[i].charAt(0).toUpperCase() + label[i].slice(1)}: ${
+      (value[i]/ total * 100).toFixed(2)}%`, 
+      this.#width * 0.05, textPosition)
+
+      // Small dots beside labels
+      this.#ctx.arc(this.#width * 0.02, textPosition * 0.96, 8, 0, 2 * Math.PI)
       this.#ctx.fillStyle = color[i]
       this.#ctx.fill()
 
       startAngle = endAngle
     }
+  }
+
+  #drawLabelText (textposition, i, label, value) {
+    
   }
 
 /**
