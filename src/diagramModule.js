@@ -22,7 +22,7 @@ export class DiagramModule {
     const canvas = document.getElementById(canvasId)
     this.#ctx = canvas.getContext('2d')
     // Default
-    this.setSize('400', '400')
+    this.setSize(400, 400)
   }
 
   /**
@@ -34,18 +34,21 @@ export class DiagramModule {
   setSize (width, height) {
     // Validate given pixels
     const minWidth = 400
-    const minHeight = 200
+    const minHeight = 400
     const maxWidth = 1200
     const maxHeight = 1200
 
+    if (typeof width !== 'number' || typeof height !== 'number') {
+      throw new Error('Width and height must be of the type number.')
+    }
     // Mainimum value
     if (width < minWidth || height < minHeight) {
-      throw new Error(`Width must be at least ${minWidth}px and height at least ${minHeight}px.`)
+      throw new Error(`Width or height must be at least ${minWidth}px.`)
     }
 
     // Maximum value
     if (width > maxWidth || height > maxHeight) {
-      throw new Error(`Width cannot exceed ${maxWidth}px and height cannot exceed ${maxHeight}px.`)
+      throw new Error(`Width or height cannot exceed ${maxWidth}px.`)
     }
     const canvas = this.#ctx.canvas
     canvas.width = width

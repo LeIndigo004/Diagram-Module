@@ -5,6 +5,7 @@ const newCircleDiagram = new DiagramModule('circle-id')
 
 // Set the size of the diagram
 
+newDiagram.setSize(400, 400)
 
 const data = [
   {label: 'apelsin', value: 1, color: 'orange'},
@@ -14,7 +15,6 @@ const data = [
 
 newDiagram.createBarChart(data,'Students', 'fruits', 10, 5)
 
-newCircleDiagram.setSize(600, 600)
 
 newCircleDiagram.setTitle('Diagram 2', 'Arial')
 
