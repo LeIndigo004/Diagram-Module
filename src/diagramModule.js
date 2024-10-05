@@ -97,6 +97,9 @@ export class DiagramModule {
     const radius = this.#width / 4
 
     for (let i = 0; i < data.length; i++) {
+      if (typeof value[i] !== 'number') {
+        throw new Error('Data must be of the type number')
+      }
       const sliceAngle = value[i] / total * 2 * Math.PI
       const endAngle = startAngle + sliceAngle
       const textPosition = this.#height * 0.15 + (i * (this.#height * 0.07))
@@ -121,10 +124,6 @@ export class DiagramModule {
 
       startAngle = endAngle
     }
-  }
-
-  #drawLabelText (textposition, i, label, value) {
-    
   }
 
 /**

@@ -4,12 +4,11 @@ const newDiagram = new DiagramModule('diagram-id')
 const newCircleDiagram = new DiagramModule('circle-id')
 
 // Set the size of the diagram
-newDiagram.setSize(600,600)
 
-newDiagram.setTitle('Diagram', 'Arial')
+
 const data = [
   {label: 'apelsin', value: 1, color: 'orange'},
-  {label: 'äpple', value: 4, color: 'red'},
+  {label: 'äpple', value: 5, color: 'red'},
   {label: 'banana', value: 7, color: 'yellow'}
 ]
 
