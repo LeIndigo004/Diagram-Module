@@ -11,8 +11,8 @@ Below is a list of test cases with description, execution and outcome. Each test
 
 ## Test Cases
 ### **TC1** `setSize(width, heigth)`
-| TC | Description | How it was tested | Test result | Status |
-|----|-------------|-------------------|-------------|--------|
+| **TC** | **Description** | **How it was tested** | **Test result** | **Status** |
+|--------|-----------------|-----------------------|-----------------|------------|
 | 1.1 | Should change width to the given input | Input: `600`, expect change of width to 600 pixels | Canvas width changed to 600 pixels | OK✅ | 
 | 1.2 | Should change height to the given input | Input: `600`, expect change of height to 600 pixels | Canvas height changed to 600 pixels | OK✅|
 | 1.3 | Throw error if input for width is bigger than 1200 pixels | Input: `1201`, expect error message: "Width and height cannot exceed `1200px`." | Error thrown correctly | OK✅|
