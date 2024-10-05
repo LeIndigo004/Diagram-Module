@@ -21,3 +21,8 @@ Below is a list of test cases with description, execution and outcome. Each test
 | 1.6 | Throw error if input for height is less than 400 pixels | Input: `399`, expect error message: "Width and height cannot be less than `400px`." | Error thrown correctly | OK✅|
 | 1.7 | Throw error if input for height and width is not a number | Input: `'500'` for height and width each, expect error message: "Width and height must be of the type number." | Error thrown correctly, but is also thrown when input is of the type number. | NOK❌ |
 | 1.7.1 | Retest after changing the default input from string to number | Input: `'500'` for height and width each, expect error message: "Width and height must be of the type number." | Error thrown correctly | OK✅|
+
+### **TC2** `setTitle(title, font)`
+| **TC** | **Description** | **How it was tested** | **Test result** | **Status** |
+|--------|-----------------|-----------------------|-----------------|------------|
+| 2.1 |  | Input:  |  | OK✅ | 
