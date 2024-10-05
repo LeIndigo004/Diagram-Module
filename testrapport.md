@@ -10,7 +10,8 @@ Below is a list of test cases with description, execution and outcome. Each test
 - **Testing Tool:** Manual testing
 
 ## Test Cases
-### TC1 setSize(*width, heigth*)
+### **TC1** `setSize(*width, heigth*)`
 | TC | Description | How it was tested | Test result | Status |
 |----|-------------|-------------------|-------------|--------|
-| 1.1 | | | | |
+| 1.1 | Should change width to the given input | Input: `600`, expect change of width to 600 pixels | Canvas width changed to 600 pixels | OK✅ | 
+| 1.2 | Should change height to the given input | Input: `400`, expect change of height to 400 pixels | Canvas height changed to 600 pixels | OK✅|
