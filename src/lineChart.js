@@ -18,7 +18,7 @@ export class LineChart {
     this.#ctx = ctx
     this.#width = width
     this.#height = height
-    this.#axes = new Axes(this.#ctx, this.#width, this.#height)
+    this.#axes = new Axes(this.#ctx, this.#height, this.#width)
   }
 
   /**
@@ -33,8 +33,10 @@ export class LineChart {
   drawChart(data, yTitle, xTitle, maxValueForY, numOfYLabels) {
     const label = data.map(item => item.label)
     const value = data.map(item => item.value)
+    this.#marginHeight = this.#height * 0.2
+    this.#marginWidth = this.#width * 0.2
 
-    this.#drawLabels(yTitle, xTitle, label, maxValueForY, numOfYLabels, true)
+    this.#axes.drawLabels(yTitle, xTitle, label, maxValueForY, numOfYLabels, true)
     const startPosition = this.#height - this.#marginHeight
     const availableWidth = this.#width - 2 * this.#marginWidth
     const availableHeight = this.#height - 2 * this.#marginHeight
@@ -43,7 +45,6 @@ export class LineChart {
       
       const xAxel = this.#marginWidth + (i * (availableWidth / (label.length - 1)))
       const yAxel =  startPosition - ((value[i] / maxValueForY) * availableHeight)
-  
       // Draw points as circles
       this.#ctx.beginPath()
       this.#ctx.arc(xAxel, yAxel, 2, 0, 2 * Math.PI)
@@ -70,15 +71,5 @@ export class LineChart {
     }
     // Make line after loop is done to avoid duplication
     this.#ctx.stroke()
-  }
-
-  #drawLabels(yTitle, xTitle, label, maxValueForY, numOfYLabels, isLineChart) {
-    this.#marginHeight = this.#height * 0.2
-    this.#marginWidth = this.#width * 0.2
-
-    // Get the axes and its labels
-    this.#axes.drawAxes(this.#marginHeight, this.#marginWidth)
-    this.#axes.setYLabels(this.#marginHeight, this.#marginWidth, yTitle, maxValueForY, numOfYLabels)
-    this.#axes.setXLabels(this.#marginHeight, this.#marginWidth, xTitle, label, isLineChart)
   }
 }

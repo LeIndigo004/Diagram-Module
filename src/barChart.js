@@ -40,7 +40,7 @@ export class BarChart {
     this.#marginWidth = this.#width * 0.2
 
     // Get the axes and its labels
-    this.#drawLabels(yTitle, xTitle, label, maxValueForY, numOfYLabels, false)
+    this.#axes.drawLabels(yTitle, xTitle, label, maxValueForY, numOfYLabels, false)
     const availableWidth = this.#width - this.#marginWidth * 2
     const barWidth = availableWidth / label.length * 0.5 // Adjust the bar width 
 
@@ -64,16 +64,4 @@ export class BarChart {
        this.#ctx.stroke()
     }
   }
-
-  
-  #drawLabels(yTitle, xTitle, label, maxValueForY, numOfYLabels, isLineChart) {
-    this.#marginHeight = this.#height * 0.2
-    this.#marginWidth = this.#width * 0.2
-
-    // Get the axes and its labels
-    this.#axes.drawAxes(this.#marginHeight, this.#marginWidth)
-    this.#axes.setYLabels(this.#marginHeight, this.#marginWidth, yTitle, maxValueForY, numOfYLabels)
-    this.#axes.setXLabels(this.#marginHeight, this.#marginWidth, xTitle, label, isLineChart)
-  }
-
 }

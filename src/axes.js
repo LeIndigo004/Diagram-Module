@@ -9,13 +9,25 @@
   #ctx
   #height
   #width
+  #marginHeight
+  #marginWidth
   constructor (canvas, height, width) {
     this.#ctx = canvas
     this.#height = height
     this.#width = width
   }
 
-  setXLabels (marginHeight, marginWidth, xLabelName, xLabels, isLineChart) {
+  drawLabels(yTitle, xTitle, label, maxValueForY, numOfYLabels, isLineChart) {
+    this.#marginHeight = this.#height * 0.2
+    this.#marginWidth = this.#width * 0.2
+
+    // Get the axes and its labels
+    this.#drawAxes(this.#marginHeight, this.#marginWidth)
+    this.#setYLabels(this.#marginHeight, this.#marginWidth, yTitle, maxValueForY, numOfYLabels)
+    this.#setXLabels(this.#marginHeight, this.#marginWidth, xTitle, label, isLineChart)
+  }
+
+  #setXLabels (marginHeight, marginWidth, xLabelName, xLabels, isLineChart) {
     // this.#drawAxes(marginHeight, marginWidth)
      const fontSize = this.#height * 0.03
      this.#ctx.font = `${fontSize}px Lucida Console`; // Set font size
@@ -45,7 +57,7 @@
      }
    }
 
-   setYLabels (marginHeight, marginWidth, yLabel, maxValueForY, yNumOfLabels) {
+   #setYLabels (marginHeight, marginWidth, yLabel, maxValueForY, yNumOfLabels) {
     // Center the labels
      this.#ctx.textAlign = 'center'
  
@@ -73,16 +85,21 @@
      }
    }
 
-  drawAxes (marginHeight, marginWidth) {
+   #drawAxes (marginHeight, marginWidth) {
 
     // x axel
     this.#ctx.beginPath()
     this.#ctx.moveTo(marginWidth, this.#height - marginHeight)
     this.#ctx.lineTo(this.#width - marginWidth, this.#height - marginHeight)
+    console.log('X-axeln start:', marginWidth, this.#height - marginHeight);
+    console.log('X-axeln slut:', this.#width - marginWidth, this.#height - marginHeight);
+
 
     // y axel
     this.#ctx.moveTo(marginWidth, this.#height - marginHeight)
     this.#ctx.lineTo(marginWidth, marginHeight)
     this.#ctx.stroke()
+    console.log('Y-axeln start:', marginWidth, this.#height - marginHeight);
+    console.log('Y-axeln slut:', marginWidth, marginHeight);
   }
 }

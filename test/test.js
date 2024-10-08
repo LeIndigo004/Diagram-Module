@@ -5,7 +5,7 @@ const newCircleDiagram = new DiagramModule('circle-id')
 
 // Set the size of the diagram
 
-newDiagram.setSize(400, 400)
+newDiagram.setSize(700, 500)
 
 const data = [
   {label: 'apelsin', value: 1, color: 'orange'},
@@ -13,7 +13,7 @@ const data = [
   {label: 'banana', value: 7, color: 'yellow'}
 ]
 
-newDiagram.createLineChart(data,'Students', 'fruits', 10, 5)
+newDiagram.createLineChart(data,'Students', 'Fruits', 10, 10)
 
 
 newCircleDiagram.setSize(600, 1000)
