@@ -18,7 +18,7 @@
   setXLabels (marginHeight, marginWidth, xLabelName, xLabels, isLineChart) {
     // this.#drawAxes(marginHeight, marginWidth)
      const fontSize = this.#height * 0.03
-     this.#ctx.font = `${fontSize}px Georgia`; // Set font size
+     this.#ctx.font = `${fontSize}px Lucida Console`; // Set font size
      this.#ctx.textAlign = 'left'
      this.#ctx.fillText(xLabelName, (this.#width - marginWidth) * 1.02, this.#height - marginHeight)
  
@@ -39,7 +39,7 @@
        this.#ctx.stroke()
  
       // Create a title for the labels
-       this.#ctx.font = `${this.#height * 0.02}px Georgia`; // Set font size
+       this.#ctx.font = `${this.#height * 0.02}px Lucida Console`; // Set font size
        this.#ctx.textAlign = 'center'
        this.#ctx.fillText(xLabels[i], labelX, (this.#height - marginHeight) * 1.05)
      }
@@ -50,7 +50,7 @@
      this.#ctx.textAlign = 'center'
  
      // Style the text
-     this.#ctx.font = `${this.#height * 0.03}px Georgia` // Set font size
+     this.#ctx.font = `${this.#height * 0.03}px Lucida Console` // Set font size
      this.#ctx.fillText(yLabel, marginWidth, marginHeight / 1.5)
  
      // Loop through each given label
@@ -67,7 +67,7 @@
        this.#ctx.stroke()
  
        // Create a title for the labels
-       this.#ctx.font = `${this.#height * 0.03}px Georgia`
+       this.#ctx.font = `${this.#height * 0.03}px Lucida Console`
        this.#ctx.textAlign = 'center'
        this.#ctx.fillText(labelValue.toFixed(0), marginWidth * 0.7, labelY)
      }

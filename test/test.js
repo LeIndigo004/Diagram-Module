@@ -13,9 +13,10 @@ const data = [
   {label: 'banana', value: 7, color: 'yellow'}
 ]
 
-newDiagram.createBarChart(data,'Students', 'fruits', 10, 5)
+newDiagram.createLineChart(data,'Students', 'fruits', 10, 5)
 
 
-newCircleDiagram.setTitle('Diagram 2', 'Arial')
+newCircleDiagram.setSize(600, 1000)
+newCircleDiagram.setTitle('Diagram 2', 'Lucida Console')
 
 newCircleDiagram.createPieChart(data)
