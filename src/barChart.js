@@ -18,7 +18,7 @@ export class BarChart {
     this.#ctx = ctx
     this.#width = width
     this.#height = height
-    this.#axes = new Axes(this.#ctx, this.#width, this.#height)
+    this.#axes = new Axes(this.#ctx, this.#height, this.#width)
   }
 
   /**

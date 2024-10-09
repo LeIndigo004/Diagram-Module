@@ -47,7 +47,7 @@ export class LineChart {
       const yAxel =  startPosition - ((value[i] / maxValueForY) * availableHeight)
       // Draw points as circles
       this.#ctx.beginPath()
-      this.#ctx.arc(xAxel, yAxel, 2, 0, 2 * Math.PI)
+      this.#ctx.arc(xAxel, yAxel, 3, 0, 2 * Math.PI)
       this.#ctx.fillStyle = 'black'
       this.#ctx.fill()
     }
