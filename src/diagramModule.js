@@ -69,14 +69,14 @@ export class DiagramModule {
    */
   setTitle (title, font) {
     // If the given string is empty.
-    if (title === '') {
-      throw new Error('Please, do not use an empty string as a title.')
+    if (title === '' || font === '') {
+      throw new Error('Please, do not use an empty string.')
     // If the given string has a length longer than 50.
     } else if (title.length > 50) {
       throw new Error('Maximal length of string is 50.')
     } else {
       this.#ctx.textAlign = 'center'
-      this.#ctx.font = `${this.#height * 0.05}px ${font}`
+      this.#ctx.font = `bold ${this.#height * 0.05}px ${font}`
       this.#ctx.fillText(title, this.#width / 2, this.#height * 0.06) // try to center text
     }  
   }
@@ -87,9 +87,9 @@ export class DiagramModule {
    * @param {Object[]} data - The given data.
    * @param {string[]} colors - The given colors
    */
-  createPieChart (data) {
+  createPieChart (data, viewData) {
     this.#pieChart = new PieChart(this.#ctx, this.#width, this.#height)
-    this.#pieChart.drawChart(data)
+    this.#pieChart.drawChart(data, viewData)
   }
 
 /**

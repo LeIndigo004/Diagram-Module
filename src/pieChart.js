@@ -21,11 +21,9 @@ export class PieChart {
    * @param {Object[]} data - The given data.
    * @param {string[]} colors - The given colors
    */
-    drawChart (data) {
-      const value = data.map(item => item.value)
-
-      value.sort((a, b) => a - b)
-
+    drawChart (data, viewData) {
+      const sortedData = data.sort((a, b) => a.value - b.value)
+      const value = sortedData.map(item => item.value)
       // Get the percent of each value
       const total = value.reduce((sum, value) => sum + value, 0)
       let startAngle = 0
@@ -34,7 +32,7 @@ export class PieChart {
       const centralY = this.#height / 2
       const radius = this.#width / 4
   
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0; i < sortedData.length; i++) {
         if (typeof value[i] !== 'number') {
           throw new Error('Data must be of the type number')
         }
@@ -43,26 +41,35 @@ export class PieChart {
         this.#ctx.beginPath()
         // create slice of pie chart
         this.#ctx.moveTo(centralX, centralY)
-        this.#ctx.arc(centralX, centralY, 200, startAngle, endAngle)
+        this.#ctx.arc(centralX, centralY, radius, startAngle, endAngle)
         this.#ctx.closePath()
 
-        this.#setLabels(i, data, total)
+        this.#setLabels(i, sortedData, total, viewData)
+        
   
         startAngle = endAngle
       }
     }
 
-    #setLabels (index, data, total) {
-        const textPosition = this.#height * 0.15 + (index * (this.#height * 0.07))
+    #setLabels (index, data, total, viewData) {
+      let totalValue
+      if (viewData === 'percent') {
+        totalValue = (data[index].value/ total * 100).toFixed(2) + '%'
+      } else if (viewData === 'amount') {
+        totalValue = data[index].value
+      } else {
+        throw new Error('Invalid viewData input.')
+      }
+        const textPosition = this.#height * 0.2 + (index * (this.#height * 0.06))
         this.#ctx.font = `bold ${this.#height * 0.025}px Lucida Console`
         this.#ctx.textAlign = 'left'
         this.#ctx.fillStyle = 'black'
-        this.#ctx.fillText(`${data[index].label.charAt(0).toUpperCase() + data[index].label.slice(1)}: ${
-        (data[index].value/ total * 100).toFixed(2)}%`, 
+        this.#ctx.fillText(`${data[index].label.charAt(0).toUpperCase() + data[index].label.slice(1)}: ${totalValue}`, 
         this.#width * 0.065, textPosition)
+        console.log(data[index].color)
   
         // Small dots beside labels
-        this.#ctx.arc(this.#width * 0.04, textPosition * 0.96, 8, 0, 2 * Math.PI)
+        this.#ctx.arc(this.#width * 0.04, textPosition - 6, 8, 0, 2 * Math.PI)
         this.#ctx.fillStyle = data[index].color
         this.#ctx.fill()
     }
