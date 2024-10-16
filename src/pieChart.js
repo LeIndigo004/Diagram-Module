@@ -9,6 +9,7 @@ export class PieChart {
   #ctx
   #height
   #width
+  #displayValue
   constructor (ctx, width, height) {
     this.#ctx = ctx
     this.#width = width
@@ -52,24 +53,23 @@ export class PieChart {
     }
 
     #setLabels (index, data, total, viewData) {
-      let totalValue
       if (viewData === 'percent') {
-        totalValue = (data[index].value/ total * 100).toFixed(2) + '%'
+        this.#displayValue = (data[index].value/ total * 100).toFixed(2) + '%'
       } else if (viewData === 'amount') {
-        totalValue = data[index].value
+        this.#displayValue = data[index].value
       } else {
         throw new Error('Invalid viewData input.')
       }
         const textPosition = this.#height * 0.2 + (index * (this.#height * 0.06))
-        this.#ctx.font = `bold ${this.#height * 0.025}px Lucida Console`
+        this.#ctx.font = `${this.#height * 0.025}px Helvetica`
         this.#ctx.textAlign = 'left'
         this.#ctx.fillStyle = 'black'
-        this.#ctx.fillText(`${data[index].label.charAt(0).toUpperCase() + data[index].label.slice(1)}: ${totalValue}`, 
+        this.#ctx.fillText(`${data[index].label.charAt(0).toUpperCase() + data[index].label.slice(1)}: ${this.#displayValue}`, 
         this.#width * 0.065, textPosition)
         console.log(data[index].color)
   
         // Small dots beside labels
-        this.#ctx.arc(this.#width * 0.04, textPosition - 6, 8, 0, 2 * Math.PI)
+        this.#ctx.arc(this.#width * 0.04, textPosition - 8, 8, 0, 2 * Math.PI)
         this.#ctx.fillStyle = data[index].color
         this.#ctx.fill()
     }

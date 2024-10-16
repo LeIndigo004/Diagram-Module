@@ -22,7 +22,7 @@ export class DiagramModule {
 
   constructor (canvasId) {
     const canvas = document.getElementById(canvasId)
-    this.#ctx = canvas.getContext('2d')
+    this.#ctx = canvas.getContext('2d', { willReadFrequently: true })
     // Default
     this.setSize(400, 400)
   }
@@ -35,21 +35,19 @@ export class DiagramModule {
    */
   setSize (width, height) {
     // Validate given pixels
-    const minWidth = 400
-    const minHeight = 400
-    const maxWidth = 1200
-    const maxHeight = 1200
+    const minValue = 400
+    const maxValue = 1200
 
     if (typeof width !== 'number' || typeof height !== 'number') {
       throw new Error('Width and height must be of the type number.')
     }
     // Mainimum value
-    if (width < minWidth || height < minHeight) {
+    if (width < minValue || height < minValue) {
       throw new Error(`Width or height must be at least ${minWidth}px.`)
     }
 
     // Maximum value
-    if (width > maxWidth || height > maxHeight) {
+    if (width > maxValue || height > maxValue) {
       throw new Error(`Width or height cannot exceed ${maxWidth}px.`)
     }
     const canvas = this.#ctx.canvas
@@ -120,4 +118,21 @@ export class DiagramModule {
     this.#lineChart.drawChart(data, yTitle, xTitle, maxValueForY, numOfYLabels)
   }
 
+  /**
+   * Public method for clearing the canvas of an existing chart.
+   */
+  clear () {
+    if (!this.#isCanvasClear()) {
+      throw new Error('Canvas is already cleared')
+    } else {
+      this.#ctx.clearRect(0, 0, this.#ctx.canvas.width, this.#ctx.canvas.height)
+      this.setSize(400, 400)
+      console.log('Cleared chart!')
+    }
+  }
+
+  #isCanvasClear () {
+    return !this.#ctx.getImageData(0, 0, this.#width, this.#height).data
+    .every(value => value === 0)
+  }
 }
