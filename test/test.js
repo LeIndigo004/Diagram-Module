@@ -41,7 +41,7 @@ function barchart () {
     { label: 'Kiwi', value: 6, color: '#7CFC00' },
     { label: 'Peach', value: 9, color: '#FFCC99' }
   ]
-  newDiagram.setSize(800, 500)
+  newDiagram.setSize(1000, 600)
   newDiagram.setTitle('Undersökning angående favoritfrukt', 'helvetica')
   
   newDiagram.createBarChart(data2, 'Students', 'Fruits', 20, 10)

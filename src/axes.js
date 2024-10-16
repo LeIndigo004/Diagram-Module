@@ -31,6 +31,7 @@
     // this.#drawAxes(marginHeight, marginWidth)
      const fontSize = this.#height * 0.03
      this.#ctx.font = `bold ${fontSize}px Lucida Console`; // Set font size
+     this.#ctx.fillStyle = 'black'
      this.#ctx.textAlign = 'left'
      this.#ctx.fillText(xLabelName, (this.#width - marginWidth) * 1.02, this.#height - marginHeight)
  
@@ -52,6 +53,7 @@
  
       // Create a title for the labels
        this.#ctx.font = `${this.#height * 0.02}px Lucida Console`; // Set font size
+       this.#ctx.fillStyle = 'black'
        this.#ctx.textAlign = 'center'
        this.#ctx.fillText(xLabels[i], labelX, (this.#height - marginHeight) * 1.05)
      }
@@ -63,6 +65,7 @@
  
      // Style the text
      this.#ctx.font = `bold ${this.#height * 0.03}px Lucida Console` // Set font size
+     this.#ctx.fillStyle = 'black'
      this.#ctx.fillText(yLabel, marginWidth, marginHeight / 1.5)
  
      // Loop through each given label
@@ -80,6 +83,7 @@
  
        // Create a title for the labels
        this.#ctx.font = `${this.#height * 0.03}px Lucida Console`
+       this.#ctx.fillStyle = 'black'
        this.#ctx.textAlign = 'center'
        this.#ctx.fillText(labelValue.toFixed(0), marginWidth - 60, labelY)
      }

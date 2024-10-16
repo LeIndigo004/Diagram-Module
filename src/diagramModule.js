@@ -43,16 +43,13 @@ export class DiagramModule {
     }
     // Mainimum value
     if (width < minValue || height < minValue) {
-      throw new Error(`Width or height must be at least ${minWidth}px.`)
+      throw new Error(`Width or height must be at least ${minValue}px.`)
     }
 
     // Maximum value
     if (width > maxValue || height > maxValue) {
-      throw new Error(`Width or height cannot exceed ${maxWidth}px.`)
+      throw new Error(`Width or height cannot exceed ${maxValue}px.`)
     }
-    const canvas = this.#ctx.canvas
-    canvas.width = width
-    canvas.height = height
   
     // Set the values to the private fields
     this.#width = width
@@ -75,6 +72,7 @@ export class DiagramModule {
     } else {
       this.#ctx.textAlign = 'center'
       this.#ctx.font = `bold ${this.#height * 0.05}px ${font}`
+      this.#ctx.fillStyle = 'black'
       this.#ctx.fillText(title, this.#width / 2, this.#height * 0.06) // try to center text
     }  
   }
@@ -122,7 +120,7 @@ export class DiagramModule {
    * Public method for clearing the canvas of an existing chart.
    */
   clear () {
-    if (!this.#isCanvasClear()) {
+    if (this.#isCanvasClear()) {
       throw new Error('Canvas is already cleared')
     } else {
       this.#ctx.clearRect(0, 0, this.#ctx.canvas.width, this.#ctx.canvas.height)
@@ -131,8 +129,13 @@ export class DiagramModule {
     }
   }
 
+  /**
+   * Private method for checking if a canvas is cleared or not.
+   *
+   * @returns a boolean value of true if the canvas is cleared.
+   */
   #isCanvasClear () {
-    return !this.#ctx.getImageData(0, 0, this.#width, this.#height).data
+    return this.#ctx.getImageData(0, 0, this.#width, this.#height).data
     .every(value => value === 0)
   }
 }
