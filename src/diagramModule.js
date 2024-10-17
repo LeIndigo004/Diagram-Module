@@ -69,6 +69,8 @@ export class DiagramModule {
     // If the given string has a length longer than 50.
     } else if (title.length > 50) {
       throw new Error('Maximal length of string is 50.')
+    } else if (typeof title !== 'string'|| typeof font !== 'string') {
+      throw new Error('Must be of the type string.')
     } else {
       this.#ctx.textAlign = 'center'
       this.#ctx.font = `bold ${this.#height * 0.05}px ${font}`
@@ -97,9 +99,9 @@ export class DiagramModule {
  * @param {Number} maxValueForY - The highest value on the y axel
  * @param {Number} numOfYLabels - The amount of written out labels you want on the y axel
  */
-  createBarChart (data, yTitle, xTitle, maxValueForY, numOfYLabels) {
+  createBarChart (data, labels) {
     this.#barChart = new BarChart(this.#ctx, this.#width, this.#height)
-    this.#barChart.drawChart(data, yTitle, xTitle, maxValueForY, numOfYLabels)
+    this.#barChart.drawChart(data, labels.yTitle, labels.xTitle, labels.maxValueForY, labels.numOfYLabels)
   }
 
 /**
@@ -111,9 +113,9 @@ export class DiagramModule {
  * @param {Number} maxValueForY - The highest value on the y axel
  * @param {Number} numOfYLabels - The amount of written out labels you want on the y axel
  */
-  createLineChart(data, yTitle, xTitle, maxValueForY, numOfYLabels) {
+  createLineChart(data, labels) {
     this.#lineChart = new LineChart(this.#ctx, this.#width, this.#height)
-    this.#lineChart.drawChart(data, yTitle, xTitle, maxValueForY, numOfYLabels)
+    this.#lineChart.drawChart(data, labels.yTitle, labels.xTitle, labels.maxValueForY, labels.numOfYLabels)
   }
 
   /**

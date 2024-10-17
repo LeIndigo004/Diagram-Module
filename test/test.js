@@ -28,7 +28,7 @@ function piechart () {
     { label: 'Peach', value: 9, color: '#FFCC99' }
 ]
   newDiagram.setSize(600, 600)
-  newDiagram.setTitle('Undersökning angående favoritfrukt', 'helvetica')
+  newDiagram.setTitle('Analysis of students', 'Helvetica')
   
   return newDiagram.createPieChart(data, 'amount')
 }
@@ -43,8 +43,7 @@ function barchart () {
   ]
   newDiagram.setSize(1000, 600)
   newDiagram.setTitle('Undersökning angående favoritfrukt', 'helvetica')
-  
-  newDiagram.createBarChart(data2, 'Students', 'Fruits', 20, 10)
+  newDiagram.createBarChart(data2, {yTitle: 'Students', xTitle: 'Fruits', maxValueForY: 20, numOfYLabels: 10})
   
 }
 function linechart () {
@@ -58,5 +57,5 @@ function linechart () {
   newDiagram.setSize(800, 500)
   newDiagram.setTitle('Undersökning angående favoritfrukt', 'helvetica')
   
-  newDiagram.createLineChart(data3, '', 'Dagar', 20, 10)
+  newDiagram.createLineChart(data3, {yTitle: '', xTitle: 'Dagar', maxValueForY: 20, numOfYLabels: 10})
 }
