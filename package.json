@@ -1,7 +1,7 @@
 {
-  "name": "sort-and-filter-module",
+  "name": "diagram-module",
   "version": "1.0.0",
-  "description": "The Sort and Filter module made for laboration 2 in the course 1dv610.",
+  "description": "The diagram module made for laboration 2 in the course 1dv610.",
   "type": "module",
   "main": "src/diagramModule.js",
   "scripts": {
@@ -9,6 +9,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Leia Lindberg",
+  "license": "MIT"
 }
