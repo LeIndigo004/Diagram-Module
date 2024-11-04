@@ -73,3 +73,11 @@ Below is a list of test cases with description, execution and outcome. Each test
 | 6.1 | Should clear the canvas if it contains a chart | Precondition: Draw a chart on the canvas. | The canvas is cleared successfully and the console logs "Cleared chart!" | OK✅ |
 | 6.2 | Should throw an error if the canvas is already cleared | Precondition: Clear the canvas first. | Error is thrown with message: "Canvas is already cleared" | OK✅ |
 | 6.3 | Should not affect other canvas states after clearing | Precondition: Store canvas state before clearing. | After clearing, the canvas state is confirmed to be empty, with no residual graphics remaining. | OK✅ |
+
+## Conclusion of first try
+- Passed: 38/39
+- Failed 1/39
+
+## Conclusion of second try
+- Passed: 39/39
+- Failed 0/39
