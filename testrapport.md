@@ -1,5 +1,5 @@
 # Diagram Module - Testreport
-This module was manually tested through a created test app placed in the folder named **test** with the help of a browser. The test app is made of a test.js file and a normal index.html file where test.js is imported as a script. It was made to check each method's functionality with different input values and conditions. I am aware of the problem where these manual test cases get pretty big easily. ==In the future, I would like to use the testing framework jest for testing some parts of the code.==
+This module was manually tested through a created test app placed in the folder named **test** with the help of a browser. The test app is made of a test.js file and a normal index.html file where test.js is imported as a script. It was made to check each method's functionality with different input values and conditions. I am aware of the problem where these manual test cases get pretty big easily. **In the future, I would like to use the testing framework jest for testing some parts of the code.**
 
 Below is a list of test cases with description, execution and outcome. Each test case is focused on one public method in the module, to insure they work as intended.
 
