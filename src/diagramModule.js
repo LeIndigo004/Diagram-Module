@@ -123,6 +123,7 @@ export class DiagramModule {
       this.#validator.isDataArray(data)
       this.#validator.isArrayWithObject(data)
       this.#validator.isValueANumber(data)
+      this.#validator.validateLabels(labels)
 
       this.#barChart = new BarChart(this.#ctx, this.#width, this.#height)
       this.#barChart.drawChart(data, labels.yTitle, labels.xTitle, labels.maxValueForY, labels.numOfYLabels)
@@ -142,6 +143,7 @@ export class DiagramModule {
       this.#validator.isDataArray(data)
       this.#validator.isArrayWithObject(data)
       this.#validator.isValueANumber(data)
+      this.#validator.validateLabels(labels)
 
       this.#lineChart = new LineChart(this.#ctx, this.#width, this.#height)
       this.#lineChart.drawChart(data, labels.yTitle, labels.xTitle, labels.maxValueForY, labels.numOfYLabels)

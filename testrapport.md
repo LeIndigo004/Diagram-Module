@@ -74,10 +74,20 @@ Below is a list of test cases with description, execution and outcome. Each test
 | 6.2 | Should throw an error if the canvas is already cleared | Precondition: Clear the canvas first. | Error is thrown with message: "Canvas is already cleared" | OK✅ |
 | 6.3 | Should not affect other canvas states after clearing | Precondition: Store canvas state before clearing. | After clearing, the canvas state is confirmed to be empty, with no residual graphics remaining. | OK✅ |
 
+### **TC7** `validateLabels(labels)`
+| **TC** | **Description** | **How it was tested** | **Test result** | **Status** |
+|--------|-----------------|-----------------------|-----------------|------------|
+| 7.1 | Should not throw an error for valid inputs | Input: `{ yTitle: "Sales", xTitle: "Months", maxValueForY: 100, numOfYLabels: 5 }` | Validation passes without throwing errors. | OK✅ |
+| 7.2 | Should throw an error if yTitle is an empty string | Input: `{ yTitle: "", xTitle: "Months", maxValueForY: 100, numOfYLabels: 5 }` | Error is thrown with message: "yTitle must be a non-empty string." | OK✅ |
+| 7.3 | Should throw an error if xTitle is an empty string | Input: `{ yTitle: "Sales", xTitle: "", maxValueForY: 100, numOfYLabels: 5 }` | Error is thrown with message: "xTitle must be a non-empty string." | OK✅ |
+| 7.4 | Should throw an error if maxValueForY is not a positive number | Input: `{ yTitle: "Sales", xTitle: "Months", maxValueForY: -10, numOfYLabels: 5 }` | Error is thrown with message: "maxValueForY must be a positive number." | OK✅ |
+| 7.5 | Should throw an error if numOfYLabels is not a positive integer | Input: `{ yTitle: "Sales", xTitle: "Months", maxValueForY: 100, numOfYLabels: 0 }` | Error is thrown with message: "numOfYLabels must be a positive integer." | OK✅ |
+| 7.6 | Should throw an error if maxValueForY is less than numOfYLabels | Input: `{ yTitle: "Sales", xTitle: "Months", maxValueForY: 3, numOfYLabels: 5 }` | Error is thrown with message: "maxValueForY must be greater than or equal to numOfYLabels." | OK✅ |
+
 ## Conclusion of first try
 - Passed: 38/39
 - Failed 1/39
 
 ## Conclusion of second try
-- Passed: 39/39
-- Failed 0/39
+- Passed: 45/45
+- Failed 0/45

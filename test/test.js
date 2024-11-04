@@ -39,5 +39,5 @@ function linechart () {
   newDiagram.setSize(800, 500)
   newDiagram.setTitle('Undersökning angående favoritfrukt', 'helvetica')
   
-  newDiagram.createLineChart(data3, {yTitle: '', xTitle: 'Dagar', maxValueForY: 30, numOfYLabels: 3})
+  newDiagram.createLineChart(data3, {yTitle: '', xTitle: '', maxValueForY: 30, numOfYLabels: 3})
 }
