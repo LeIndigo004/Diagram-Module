@@ -20,7 +20,7 @@ export class PieChart {
    * Creates a pie chart which takes data and colors as parameters.
    *
    * @param {Object[]} data - The given data.
-   * @param {string[]} colors - The given colors
+   * @param {boolean} viewData - Views the percentage if true.
    */
     drawChart (data, viewData) {
       const sortedData = data.sort((a, b) => a.value - b.value)
@@ -34,9 +34,6 @@ export class PieChart {
       const radius = this.#width / 4
   
       for (let i = 0; i < sortedData.length; i++) {
-        if (typeof value[i] !== 'number') {
-          throw new Error('Data must be of the type number')
-        }
         const sliceAngle = value[i] / total * 2 * Math.PI
         const endAngle = startAngle + sliceAngle
         this.#ctx.beginPath()
@@ -53,9 +50,9 @@ export class PieChart {
     }
 
     #setLabels (index, data, total, viewData) {
-      if (viewData === 'percent') {
+      if (viewData === true) {
         this.#displayValue = (data[index].value/ total * 100).toFixed(2) + '%'
-      } else if (viewData === 'amount') {
+      } else if (viewData === false) {
         this.#displayValue = data[index].value
       } else {
         throw new Error('Invalid viewData input.')

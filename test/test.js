@@ -20,42 +20,24 @@ clearButton.addEventListener('click', () => newDiagram.clear())
 
 
 function piechart () {
-  const data = [
-    { label: 'Blueberry', value: 5, color: '#4F86F7' },
-    { label: 'Strawberry', value: 18, color: '#FF43A4' },
-    { label: 'Pineapple', value: 8, color: '#F5E050' },
-    { label: 'Kiwi', value: 6, color: '#7CFC00' },
-    { label: 'Peach', value: 9, color: '#FFCC99' }
-]
+  const data = [{ label: 'A', value: 3, color: '#FF0000' }, { label: 'B', value: 20, color: '#00FF00' }, { label: 'C', value: 30, color: '#0000FF' }]
   newDiagram.setSize(600, 600)
   newDiagram.setTitle('Analysis of students', 'Helvetica')
   
-  return newDiagram.createPieChart(data, 'amount')
+  return newDiagram.createPieChart(data, false)
 }
 
 function barchart () {
-  const data2 = [
-    { label: 'Blueberry', value: 5, color: '#4F86F7' },
-    { label: 'Strawberry', value: 18, color: '#FF43A4' },
-    { label: 'Pineapple', value: 8, color: '#F5E050' },
-    { label: 'Kiwi', value: 6, color: '#7CFC00' },
-    { label: 'Peach', value: 9, color: '#FFCC99' }
-  ]
+  const data2 = [{ label: 'A', value: 10, color: '#FF0000' }, { label: 'B', value: 20, color: '#00FF00' }, { label: 'C', value: 30, color: '#0000FF' }]
   newDiagram.setSize(1000, 600)
   newDiagram.setTitle('Undersökning angående favoritfrukt', 'helvetica')
-  newDiagram.createBarChart(data2, {yTitle: 'Students', xTitle: 'Fruits', maxValueForY: 20, numOfYLabels: 10})
+  newDiagram.createBarChart([], {yTitle: 'Values', xTitle: 'Labels', maxValueForY: 30, numOfYLabels: 5})
   
 }
 function linechart () {
-  const data3 = [
-    { label: 'Måndag', value: 13, color: '#4F86F7' },
-    { label: 'Tisdag', value: 18, color: '#FF43A4' },
-    { label: 'Onsdag', value: 8, color: '#F5E050' },
-    { label: 'Torsdag', value: 6, color: '#7CFC00' },
-    { label: 'Fredag', value: 9, color: '#FFCC99' }
-  ]
+  const data3 = [{ label: 'A', value: 10 }, { label: 'B', value: 20 }, { label: 'C', value: 30 }]
   newDiagram.setSize(800, 500)
   newDiagram.setTitle('Undersökning angående favoritfrukt', 'helvetica')
   
-  newDiagram.createLineChart(data3, {yTitle: '', xTitle: 'Dagar', maxValueForY: 20, numOfYLabels: 10})
+  newDiagram.createLineChart(data3, {yTitle: '', xTitle: 'Dagar', maxValueForY: 30, numOfYLabels: 3})
 }
