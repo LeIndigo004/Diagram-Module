@@ -15,7 +15,6 @@ lineButton.addEventListener('click', linechart)
 const clearButton = document.getElementById('clear')
 
 clearButton.addEventListener('click', () => newDiagram.clear())
-// Set the size of the diagram
 
 
 
