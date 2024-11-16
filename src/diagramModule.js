@@ -90,17 +90,9 @@ export class DiagramModule {
     }
   }
 
-  /**
-   * Creates a pie chart which takes data and colors as parameters.
-   *
-   * @param {Object[]} data - The given data.
-   * @param {string[]} colors - The given colors
-   */
   createPieChart(data, viewData) {
     try {
-      this.#validator.isDataArray(data)
-      this.#validator.isArrayWithObject(data)
-      this.#validator.isValueANumber(data)
+      this.#validateChartData(data)
 
       this.#pieChart = new PieChart(this.#ctx, this.#width, this.#height)
       this.#pieChart.drawChart(data, viewData)
@@ -109,21 +101,10 @@ export class DiagramModule {
     }
   }
 
-  /**
-   * Creates a bar chart with customizable labels for y and x axels, and colors.
-   *
-   * @param {Object[]} data - The given data to track in the diagram
-   * @param {String} xTitle - The title of the x axel
-   * @param {String} yTitle - The title of the y axel
-   * @param {Number} maxValueForY - The highest value on the y axel
-   * @param {Number} numOfYLabels - The amount of written out labels you want on the y axel
-   */
   createBarChart(data, labels) {
     try {
-      this.#validator.isDataArray(data)
-      this.#validator.isArrayWithObject(data)
-      this.#validator.isValueANumber(data)
-      this.#validator.validateLabels(labels)
+      this.#validateChartData(data)
+      this.#validateChartLabels(labels)
 
       this.#barChart = new BarChart(this.#ctx, this.#width, this.#height)
       this.#barChart.drawChart(data, labels.yTitle, labels.xTitle, labels.maxValueForY, labels.numOfYLabels)
@@ -132,18 +113,11 @@ export class DiagramModule {
     }
   }
 
-  /**
-   * Creates a line chart with customizable labels for y and x axels.
-   *
-   * @param {Object[]} data - The given data to track in the diagram
-   * @param {} labels - The title of the x axel
-   */
+
   createLineChart(data, labels) {
     try {
-      this.#validator.isDataArray(data)
-      this.#validator.isArrayWithObject(data)
-      this.#validator.isValueANumber(data)
-      this.#validator.validateLabels(labels)
+      this.#validateChartData(data)
+      this.#validateChartLabels(labels)
 
       this.#lineChart = new LineChart(this.#ctx, this.#width, this.#height)
       this.#lineChart.drawChart(data, labels.yTitle, labels.xTitle, labels.maxValueForY, labels.numOfYLabels)
@@ -152,9 +126,6 @@ export class DiagramModule {
     }
   }
 
-  /**
-   * Public method for clearing the canvas of an existing chart.
-   */
   clear() {
     try {
       if (this.#isCanvasClear()) {
@@ -168,13 +139,18 @@ export class DiagramModule {
     }
   }
 
-  /**
-   * Private method for checking if a canvas is cleared or not.
-   *
-   * @returns a boolean value of true if the canvas is cleared.
-   */
   #isCanvasClear() {
     return this.#ctx.getImageData(0, 0, this.#width, this.#height).data
       .every(value => value === 0)
+  }
+
+  #validateChartData(data) {
+    this.#validator.isDataArray(data)
+    this.#validator.isArrayWithObject(data)
+    this.#validator.isValueANumber(data)
+  }
+
+  #validateChartLabels(labels) {
+    this.#validator.validateLabels(labels)
   }
 }
