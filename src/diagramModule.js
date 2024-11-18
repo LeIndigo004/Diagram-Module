@@ -25,9 +25,10 @@ export class DiagramModule {
   constructor(canvasId) {
     const canvas = document.getElementById(canvasId)
     this.#ctx = canvas.getContext('2d', { willReadFrequently: true })
-    // Default
+    
     this.setSize(400, 400)
-    this.#validator = new Validator();
+
+    this.#validator = new Validator()
   }
 
   /**
@@ -38,26 +39,10 @@ export class DiagramModule {
    */
   setSize(width, height) {
     try {
-      // Validate given pixels
-      const minValue = 400
-      const maxValue = 1200
-
-      if (typeof width !== 'number' || typeof height !== 'number') {
-        throw new Error('Width and height must be of the type number.')
-      }
-      // Mainimum value
-      if (width < minValue || height < minValue) {
-        throw new Error(`Width or height must be at least ${minValue}px.`)
-      }
-
-      // Maximum value
-      if (width > maxValue || height > maxValue) {
-        throw new Error(`Width or height cannot exceed ${maxValue}px.`)
-      }
-
       // Set the values to the private fields
       this.#width = width
       this.#height = height
+      this.#validateChartSize()
     } catch (error) {
       console.error(error)
     }
@@ -142,6 +127,25 @@ export class DiagramModule {
   #isCanvasClear() {
     return this.#ctx.getImageData(0, 0, this.#width, this.#height).data
       .every(value => value === 0)
+  }
+
+  #validateChartSize() {
+    // Validate given pixels
+    const minValue = 400
+    const maxValue = 1200
+
+    if (typeof this.#width !== 'number' || typeof this.#height !== 'number') {
+      throw new Error('Width and height must be of the type number.')
+    }
+    // Mainimum value
+    if (this.#width < minValue || this.#height < minValue) {
+      throw new Error(`Width or height must be at least ${minValue}px.`)
+    }
+
+    // Maximum value
+    if (this.#width > maxValue || this.#height > maxValue) {
+      throw new Error(`Width or height cannot exceed ${maxValue}px.`)
+    }
   }
 
   #validateChartData(data) {

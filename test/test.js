@@ -28,9 +28,9 @@ function piechart () {
 
 function barchart () {
   const data2 = [{ label: 'A', value: 10, color: '#FF0000' }, { label: 'B', value: 20, color: '#00FF00' }, { label: 'C', value: 30, color: '#0000FF' }]
-  newDiagram.setSize(1000, 600)
+  newDiagram.setSize(600, 400)
   newDiagram.setTitle('Undersökning angående favoritfrukt', 'helvetica')
-  newDiagram.createBarChart([], {yTitle: 'Values', xTitle: 'Labels', maxValueForY: 30, numOfYLabels: 5})
+  newDiagram.createBarChart(data2, {yTitle: 'Values', xTitle: 'Labels', maxValueForY: 30, numOfYLabels: 5})
   
 }
 function linechart () {
