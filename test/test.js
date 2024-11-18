@@ -28,14 +28,14 @@ function piechart () {
 function barchart () {
   const data2 = [{ label: 'X', value: 50, color: '#FF5733' }, { label: 'Y', value: 75, color: '#33FF57' }, { label: 'Z', value: 100, color: '#3357FF' }]
   newDiagram.setSize(600, 400)
-  newDiagram.setTitle('Undersökning angående favoritfrukt', 'helvetica')
+  newDiagram.setTitle('People', 'helvetica')
   newDiagram.createBarChart(data2, {yTitle: 'Amount', xTitle: 'Categories', maxValueForY: 100, numOfYLabels: 4})
   
 }
 function linechart () {
   const data3 = [{ label: 'Jan', value: 200 }, { label: 'Feb', value: 400 }, { label: 'Mar', value: 600 }]
   newDiagram.setSize(500, 500)
-  newDiagram.setTitle('Undersökning angående favoritfrukt', 'helvetica')
+  newDiagram.setTitle('Cost', 'helvetica')
   
   newDiagram.createLineChart(data3, {yTitle: 'Revenue', xTitle: 'Months', maxValueForY: 600, numOfYLabels: 6})
 }

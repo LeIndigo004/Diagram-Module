@@ -1,6 +1,6 @@
 {
   "name": "diagram-module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The diagram module made for laboration 2 in the course 1dv610.",
   "type": "module",
   "main": "src/diagramModule.js",
