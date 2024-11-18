@@ -40,3 +40,11 @@ function linechart () {
   
   newDiagram.createLineChart(data3, {yTitle: '', xTitle: '', maxValueForY: 30, numOfYLabels: 3})
 }
+
+// a static test
+const staticDiagram = new DiagramModule('canvas2')
+
+const data4 = [{ label: 'A', value: 10, color: '#FF0000' }, { label: 'B', value: 20, color: '#00FF00' }, { label: 'C', value: 30, color: '#0000FF' }]
+staticDiagram.setSize(500, 500)
+staticDiagram.setTitle('En undersökning', 'arial')
+staticDiagram.createBarChart(data4, {yTitle: 'mängd', xTitle: 'dagar', maxValueForY: 60, numOfYLabels: 6})
