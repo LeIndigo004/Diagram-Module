@@ -63,7 +63,7 @@ export class LineChart {
 
   #drawPoints(data, maxValueForY, availableWidth, availableHeight, startPosition) {
     data.forEach((item, index) => {
-      const { x, y } = this.#calculatePointPosition(index, item.value, maxValueForY, availableWidth, availableHeight, startPosition)
+      const { x, y } = this.#calculatePointPosition(index, item.value, maxValueForY, availableWidth, availableHeight, startPosition, data)
       this.#renderPoint(x, y)
     })
   }
@@ -72,7 +72,7 @@ export class LineChart {
     this.#ctx.beginPath()
 
     data.forEach((item, index) => {
-      const { x, y } = this.#calculatePointPosition(index, item.value, maxValueForY, availableWidth, availableHeight, startPosition)
+      const { x, y } = this.#calculatePointPosition(index, item.value, maxValueForY, availableWidth, availableHeight, startPosition, data)
       if (index === 0) {
         this.#ctx.moveTo(x, y)
       } else {
@@ -83,11 +83,11 @@ export class LineChart {
     this.#ctx.stroke()
   }
 
-  #calculatePointPosition(index, value, maxValueForY, availableWidth, availableHeight, startPosition) {
-    const x = this.#marginWidth + index * (availableWidth / (availableWidth / this.#marginWidth - 1))
+  #calculatePointPosition(index, value, maxValueForY, availableWidth, availableHeight, startPosition, data) {
+    const x = this.#marginWidth + index * (availableWidth / (data.length - 1))  // Justerad här
     const y = startPosition - (value / maxValueForY) * availableHeight
     return { x, y }
-  }
+  }  
 
   #renderPoint(x, y) {
     this.#ctx.beginPath()

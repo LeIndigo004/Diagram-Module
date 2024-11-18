@@ -33,8 +33,8 @@ function barchart () {
   
 }
 function linechart () {
-  const data3 = [{ label: 'Jan', value: 200 }, { label: 'Feb', value: 400 }, { label: 'Mar', value: 600 }]
-  newDiagram.setSize(500, 500)
+  const data3 = [{ label: 'Jan', value: 200 }, { label: 'Feb', value: 400 }, { label: 'Mar', value: 600 }, { label: 'Mar', value: 600 }, { label: 'Mar', value: 600 }, { label: 'Mar', value: 600 }, { label: 'Mar', value: 600 }, { label: 'Mar', value: 600 }]
+  newDiagram.setSize(800, 700)
   newDiagram.setTitle('Cost', 'helvetica')
   
   newDiagram.createLineChart(data3, {yTitle: 'Revenue', xTitle: 'Months', maxValueForY: 600, numOfYLabels: 6})
@@ -43,7 +43,7 @@ function linechart () {
 // a static test
 const staticDiagram = new DiagramModule('canvas2')
 
-const data4 = [{ label: 'A', value: 10, color: '#FF0000' }, { label: 'B', value: 20, color: '#00FF00' }, { label: 'C', value: 30, color: '#0000FF' }]
+const data4 = [{ label: 'C', value: 30, color: '#0000FF' }, { label: 'A', value: 10, color: '#FF0000' }, { label: 'C', value: 30, color: '#0000FF' }, { label: 'B', value: 20, color: '#00FF00' }, { label: 'C', value: 30, color: '#0000FF' }]
 staticDiagram.setSize(500, 500)
 staticDiagram.setTitle('En undersökning', 'arial')
 staticDiagram.createBarChart(data4, {yTitle: 'mängd', xTitle: 'dagar', maxValueForY: 60, numOfYLabels: 6})
