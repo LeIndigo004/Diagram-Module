@@ -23,7 +23,7 @@ function piechart () {
   newDiagram.setSize(600, 600)
   newDiagram.setTitle('Analysis of students', 'Helvetica')
   
-  return newDiagram.createPieChart(data, false)
+  return newDiagram.createPieChart(data, true)
 }
 
 function barchart () {
@@ -35,7 +35,7 @@ function barchart () {
 }
 function linechart () {
   const data3 = [{ label: 'A', value: 10 }, { label: 'B', value: 20 }, { label: 'C', value: 30 }]
-  newDiagram.setSize(800, 500)
+  newDiagram.setSize(500, 500)
   newDiagram.setTitle('Undersökning angående favoritfrukt', 'helvetica')
   
   newDiagram.createLineChart(data3, {yTitle: '', xTitle: '', maxValueForY: 30, numOfYLabels: 3})

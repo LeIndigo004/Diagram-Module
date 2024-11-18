@@ -14,7 +14,8 @@ export class LineChart {
   #marginHeight
   #marginWidth
   #axes
-  constructor (ctx, width, height) {
+
+  constructor(ctx, width, height) {
     this.#ctx = ctx
     this.#width = width
     this.#height = height
@@ -22,54 +23,76 @@ export class LineChart {
   }
 
   /**
- * Creates a line chart with customizable labels for y and x axels.
- *
- * @param {Object[]} data - The given data to track in the diagram
- * @param {String} xTitle - The title of the x axel
- * @param {String} yTitle - The title of the y axel
- * @param {Number} maxValueForY - The highest value on the y axel
- * @param {Number} numOfYLabels - The amount of written out labels you want on the y axel
- */
+   * Draws a line chart with axes and points.
+   *
+   * @param {Object[]} data - Array of data points, each containing `label` and `value`.
+   * @param {String} yTitle - Title for the y-axis.
+   * @param {String} xTitle - Title for the x-axis.
+   * @param {Number} maxValueForY - Maximum value for the y-axis.
+   * @param {Number} numOfYLabels - Number of y-axis labels.
+   */
   drawChart(data, yTitle, xTitle, maxValueForY, numOfYLabels) {
-    const label = data.map(item => item.label)
-    const value = data.map(item => item.value)
-    this.#marginHeight = this.#height * 0.2
-    this.#marginWidth = this.#width * 0.2
+    this.#calculateMargins()
+    this.#axes.drawLabels(yTitle, xTitle, this.#extractLabels(data), maxValueForY, numOfYLabels, true)
 
-    this.#axes.drawLabels(yTitle, xTitle, label, maxValueForY, numOfYLabels, true)
-    const startPosition = this.#height - this.#marginHeight
     const availableWidth = this.#width - 2 * this.#marginWidth
     const availableHeight = this.#height - 2 * this.#marginHeight
+    const startPosition = this.#height - this.#marginHeight
 
-    for (let i = 0; i < data.length; i++) {
-      
-      const xAxel = this.#marginWidth + (i * (availableWidth / (label.length - 1)))
-      const yAxel =  startPosition - ((value[i] / maxValueForY) * availableHeight)
-      // Draw points as circles
-      this.#ctx.beginPath()
-      this.#ctx.arc(xAxel, yAxel, 3, 0, 2 * Math.PI)
-      this.#ctx.fillStyle = 'black'
-      this.#ctx.fill()
-    }
+    this.#validateData(data, maxValueForY)
+    this.#drawPoints(data, maxValueForY, availableWidth, availableHeight, startPosition)
+    this.#drawLines(data, maxValueForY, availableWidth, availableHeight, startPosition)
+  }
 
-    for (let i = 0; i < data.length; i++) {
-      // Validate input
-      if (maxValueForY < value[i]) { 
+  #calculateMargins() {
+    this.#marginHeight = this.#height * 0.2
+    this.#marginWidth = this.#width * 0.2
+  }
+
+  #extractLabels(data) {
+    return data.map(item => item.label)
+  }
+
+  #validateData(data, maxValueForY) {
+    data.forEach(item => {
+      if (item.value > maxValueForY) {
         throw new Error('The max value for Y cannot be smaller than the given values')
       }
+    })
+  }
 
-      const xAxel = this.#marginWidth + (i * (availableWidth / (label.length - 1)))
-      const yAxel =  startPosition - ((value[i] / maxValueForY) * availableHeight)
- 
-        if (i === 0) {
-          // Move to the first position
-          this.#ctx.moveTo(xAxel, yAxel);
-        } else {
-          // Draw a line to the next position
-          this.#ctx.lineTo(xAxel, yAxel);
-        }
-    }
-    // Make line after loop is done to avoid duplication
+  #drawPoints(data, maxValueForY, availableWidth, availableHeight, startPosition) {
+    data.forEach((item, index) => {
+      const { x, y } = this.#calculatePointPosition(index, item.value, maxValueForY, availableWidth, availableHeight, startPosition)
+      this.#renderPoint(x, y)
+    })
+  }
+
+  #drawLines(data, maxValueForY, availableWidth, availableHeight, startPosition) {
+    this.#ctx.beginPath()
+
+    data.forEach((item, index) => {
+      const { x, y } = this.#calculatePointPosition(index, item.value, maxValueForY, availableWidth, availableHeight, startPosition)
+      if (index === 0) {
+        this.#ctx.moveTo(x, y)
+      } else {
+        this.#ctx.lineTo(x, y)
+      }
+    })
+
     this.#ctx.stroke()
+  }
+
+  #calculatePointPosition(index, value, maxValueForY, availableWidth, availableHeight, startPosition) {
+    const x = this.#marginWidth + index * (availableWidth / (availableWidth / this.#marginWidth - 1))
+    const y = startPosition - (value / maxValueForY) * availableHeight
+    return { x, y }
+  }
+
+  #renderPoint(x, y) {
+    this.#ctx.beginPath()
+    this.#ctx.arc(x, y, 3, 0, 2 * Math.PI)
+    this.#ctx.fillStyle = 'black'
+    this.#ctx.fill()
   }
 }
