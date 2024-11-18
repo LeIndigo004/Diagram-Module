@@ -4,7 +4,7 @@
 
 ![A Diagram](./images/bar-chart-2.png)
 
-## Version: 1.0.1
+## Version: 1.0.2
 This version includes optimizations and refinements to the code for better performance and usability.
 
 ## Installation
