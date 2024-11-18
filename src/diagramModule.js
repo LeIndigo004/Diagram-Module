@@ -75,14 +75,32 @@ export class DiagramModule {
     }
   }
 
-  createPieChart(data, viewData) {
-    this.#createChart(PieChart, data, viewData)
+  /**
+   * Creates a pie chart using the provided data and displays values as percentages if requested.
+   *
+   * @param {Object[]} data - The data to display in the pie chart.
+   * @param {boolean} displayValueInPercent - Whether to display values as percentages.
+   */
+  createPieChart(data, displayValueInPercent) {
+    this.#createChart(PieChart, data, displayValueInPercent)
   }
 
+  /**
+   * Creates a bar chart using the provided data and labels.
+   *
+   * @param {Object[]} data - The data to display in the bar chart.
+   * @param {Object} labels - The labels for the chart, including titles and axis settings.
+   */
   createBarChart(data, labels) {
     this.#createChart(BarChart, data, labels)
   }
 
+  /**
+   * Creates a line chart using the provided data and labels.
+   *
+   * @param {Object[]} data - The data to display in the line chart.
+   * @param {Object} labels - The labels for the chart, including titles and axis settings.
+   */
   createLineChart(data, labels) {
     this.#createChart(LineChart, data, labels)
   }
@@ -101,7 +119,7 @@ export class DiagramModule {
         const chart = new ChartClass(this.#ctx, this.#width, this.#height)
         chart.drawChart(data, labelsOrviewPercent.yTitle, labelsOrviewPercent.xTitle, labelsOrviewPercent.maxValueForY, labelsOrviewPercent.numOfYLabels)
         if (ChartClass === BarChart) {
-          this.#barChart = chart 
+          this.#barChart = chart
         }
         if (ChartClass === LineChart) {
           this.#lineChart = chart
@@ -122,14 +140,14 @@ export class DiagramModule {
     const maxValue = 1200
 
     if (typeof this.#width !== 'number' || typeof this.#height !== 'number') {
-      throw new Error('Width and height must be of the type number.') 
+      throw new Error('Width and height must be of the type number.')
     }
     if (this.#width < minValue || this.#height < minValue) {
       throw new Error(`Width or height must be at least ${minValue}px.`)
     }
     if (this.#width > maxValue || this.#height > maxValue) {
       throw new Error(`Width or height cannot exceed ${maxValue}px.`)
-    } 
+    }
   }
 
   #validateChartData(data) {
